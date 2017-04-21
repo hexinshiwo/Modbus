@@ -1,3 +1,22 @@
 <resources>
-    <string name="app_name">ModbusTest</string>
+    <string name="app_name">车控软件</string>
+    <string name="if_start">小车是否启动</string>
+    <string name="forward">前进</string>
+    <string name="stop">刹车</string>
+    <string name="backward">后退</string>
+    <string name="coil_up">线圈上升</string>
+    <string name="cruise_control">定速巡航</string>
+    <string name="coil_down">线圈下降</string>
+    <string name="km_h">km/h</string>
+    <string name="mail_text">行驶里程：         5 km</string>
+    <string name="input_rate">系统输入功率： 40%</string>
+    <string name="output_rate">系统输出功率： 80%</string>
+    <string name="sys_efficient">系统效率：         89%</string>
+    <string name="coil_elect_1">原边线圈电流：</string>
+    <string name="coil_elect_2">副边线圈电流：</string>
+    <string name="input_elect">整流输入电流：</string>
+    <string name="input_voltage">整流输入电压：</string>
+    <string name="BUCK_voltage">BUCK输入电压：</string>
+    <string name="BUCK_elect">BUCK输出电流：</string>
+    <string name="temp">线圈温度：</string>
 </resources>
