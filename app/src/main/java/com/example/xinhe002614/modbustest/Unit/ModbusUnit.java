@@ -20,6 +20,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by xinhe002614 on 2017/4/20.
@@ -530,7 +532,23 @@ public class ModbusUnit {
         return result;
     }
 
+    //利用线程池的机制同时开启十个线程来去同时执行请求的发送
+    public static void createThreadPoolSendAllQequest(final String ip,final  int por,final int Tag)
+    {
+        ExecutorService fixedThreadPool= Executors.newFixedThreadPool(10);//利用了FixedThreadPool这个线程池
+        for(int i=0;i<10;i++)
+        {
+            Runnable runnable=new Runnable() {
+                @Override
+                public void run() {
+                    readResponseFromCoil(ip,por,Tag);//具体的方法可以根据实际情况来更换
+                }
+            };
+            fixedThreadPool.execute(runnable);
 
+        }
+
+    }
 
 
 }
