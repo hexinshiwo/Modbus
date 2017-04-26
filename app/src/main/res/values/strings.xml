@@ -8,10 +8,10 @@
     <string name="cruise_control">定速巡航</string>
     <string name="coil_down">线圈下降</string>
     <string name="km_h">km/h</string>
-    <string name="mail_text">行驶里程：         5 km</string>
-    <string name="input_rate">系统输入功率： 40%</string>
-    <string name="output_rate">系统输出功率： 80%</string>
-    <string name="sys_efficient">系统效率：         89%</string>
+    <string name="mail_text">行驶里程：</string>
+    <string name="input_rate">系统输入功率：</string>
+    <string name="output_rate">系统输出功率：</string>
+    <string name="sys_efficient">系统效率：</string>
     <string name="coil_elect_1">原边线圈电流：</string>
     <string name="coil_elect_2">副边线圈电流：</string>
     <string name="input_elect">整流输入电流：</string>
@@ -19,4 +19,30 @@
     <string name="BUCK_voltage">BUCK输入电压：</string>
     <string name="BUCK_elect">BUCK输出电流：</string>
     <string name="temp">线圈温度：</string>
+    <string name="value">对应值</string>
+    <string name="save">保存设置</string>
+
+    <string name="ip_address_1">原边IP地址1</string>
+    <string name="ip_address_2">原边IP地址2</string>
+    <string name="ip_address_3">原边IP地址3</string>
+    <string name="ip_address_4">原边IP地址4</string>
+    <string name="ip_address_5">原边IP地址5</string>
+    <string name="ip_address_6">原边IP地址6</string>
+    <string name="ip_address_7">原边IP地址7</string>
+    <string name="ip_address_8">原边IP地址8</string>
+    <string name="ip_address_9">原边IP地址9</string>
+    <string name="ip_address_10">原边IP地址10</string>
+    <string name="ip_address_11">副边IP地址</string>
+
+    <string name="port_1">原边端口1</string>
+    <string name="port_2">原边端口2</string>
+    <string name="port_3">原边端口3</string>
+    <string name="port_4">原边端口4</string>
+    <string name="port_5">原边端口5</string>
+    <string name="port_6">原边端口6</string>
+    <string name="port_7">原边端口7</string>
+    <string name="port_8">原边端口8</string>
+    <string name="port_9">原边端口9</string>
+    <string name="port_10">原边端口10</string>
+    <string name="port_11">副边端口</string>
 </resources>
