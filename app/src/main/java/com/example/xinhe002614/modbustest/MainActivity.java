@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.example.xinhe002614.modbustest.Unit.ModbusUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         lineChartView.setViewportCalculationEnabled(false);
         lineChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
         lineChartView.startDataAnimation();
+        ModbusUnit.createThreadPoolSendAllQequest("手动输入ip地址",8888,1);//开始连接服务器
     }
 
     public void BindView() {

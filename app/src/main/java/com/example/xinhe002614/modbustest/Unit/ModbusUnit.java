@@ -1,6 +1,8 @@
 package com.example.xinhe002614.modbustest.Unit;
 
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.test.AndroidTestCase;
 import android.util.Log;
 
 import net.wimpi.modbus.io.ModbusTCPTransaction;
@@ -16,10 +18,15 @@ import net.wimpi.modbus.msg.WriteCoilRequest;
 import net.wimpi.modbus.msg.WriteSingleRegisterRequest;
 import net.wimpi.modbus.net.TCPMasterConnection;
 
+import java.io.BufferedReader;
 import java.io.DataInput;
 import java.io.DataOutput;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,7 +34,7 @@ import java.util.concurrent.Executors;
  * Created by xinhe002614 on 2017/4/20.
  */
 
-public class ModbusUnit {
+public class ModbusUnit  {
 
 //可以读写的布尔类型(0x)    请求类：ReadCoilsRequest                     响应类：ReadCoilsResponse
 //只能读的布尔类型(1x)      请求类：ReadInputDiscretesRequest            响应类：ReadInputDiscretesResponse
@@ -69,8 +76,8 @@ public class ModbusUnit {
     private static String baseReq="3A050400";
     private static String baseControlSpeedReq="3A0E100035000408";
     private static int responseData=0;
-    private static  byte[] REQ_PRIMARY_COIL={0x3A,0x05,0x04,0x0000,0x0010};//向原边寄存器发送的命令
-    private static byte[]  REQ_SECOND_COIL={0x3A,0x05,0x04,0x0010,0x0018};//向副边寄存器发送的命令
+    private static  byte[] REQ_PRIMARY_COIL={0x3A,0x05,0x04,0x00,0x00,0x00,0x10};//向原边寄存器发送的命令
+    private static byte[]  REQ_SECOND_COIL={0x3A,0x05,0x04,0x00,0x10,0x00,0x18};//向副边寄存器发送的命令
     /**
      * 向原边dsp发送命令并读取返回的数据
      * @param ip
@@ -334,7 +341,10 @@ public class ModbusUnit {
                 e.printStackTrace();
             }
             if(dataInput!=null)//如果有数据返回
-                result=1;
+            {
+                result = 1;
+                Log.d("tip","服务器有数据返回");
+            }
             return result;
         }
     /**
@@ -373,7 +383,9 @@ public class ModbusUnit {
             e.printStackTrace();
         }
         if(dataInput!=null)//如果有数据返回
-            result=1;
+        {   result=1;
+            Log.d("tip","服务器有数据返回");
+        }
         return result;
     }
     /**
@@ -412,7 +424,10 @@ public class ModbusUnit {
             e.printStackTrace();
         }
         if(dataInput!=null)//如果有数据返回
-            result=1;
+        {
+            result = 1;
+            Log.d("tip","服务器有数据返回");
+        }
         return result;
     }
     /**
@@ -450,7 +465,10 @@ public class ModbusUnit {
             e.printStackTrace();
         }
         if(dataInput!=null)//如果有数据返回
-            result=1;
+        {
+            result = 1;
+            Log.d("tip","服务器有数据返回");
+        }
         return result;
     }
     /**
@@ -489,7 +507,10 @@ public class ModbusUnit {
             e.printStackTrace();
         }
         if(dataInput!=null)//如果有数据返回
-            result=1;
+        {
+            result = 1;
+            Log.d("tip","服务器有数据返回");
+        }
         return result;
     }
     /**
@@ -533,15 +554,16 @@ public class ModbusUnit {
     }
 
     //利用线程池的机制同时开启十个线程来去同时执行请求的发送
-    public static void createThreadPoolSendAllQequest(final String ip,final  int por,final int Tag)
+    public  static void createThreadPoolSendAllQequest(final String ip,final  int por,final int Tag)
     {
         ExecutorService fixedThreadPool= Executors.newFixedThreadPool(10);//利用了FixedThreadPool这个线程池
-        for(int i=0;i<10;i++)
+        for(int i=0;i<100;i++)
         {
             Runnable runnable=new Runnable() {
                 @Override
                 public void run() {
                     readResponseFromCoil(ip,por,Tag);//具体的方法可以根据实际情况来更换
+                //  connect(ip,por,Tag);
                 }
             };
             fixedThreadPool.execute(runnable);
@@ -550,6 +572,52 @@ public class ModbusUnit {
 
     }
 
+    public static void connect(final String ip,final  int por,final int Tag) {// 客户端与服务器连接代码
+
+        AsyncTask<Void, String, Void> reader = new AsyncTask<Void, String, Void>() {
+             DataInput dataInput=null;
+            private ObjectOutputStream oos;
+            private ObjectInputStream ois;
+            private Socket s;
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    s = new Socket(ip, por);
+                    oos = new ObjectOutputStream(s.getOutputStream());
+                    if(Tag==1)
+                    {
+                        oos.writeObject(REQ_PRIMARY_COIL);// 发送消息给服务器端
+                    }
+                    else {
+                        oos.writeObject(REQ_SECOND_COIL);// 发送消息给服务器端
+                    }
+                    oos.flush();
+                    ois = new ObjectInputStream(s.getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    dataInput = (DataInput) ois.readObject();
+                    if(dataInput!=null)
+                    {
+                        Log.d("tip","服务器有数据返回");
+                    }
+                    publishProgress("1");// 接收从服务端转发来的消息
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            protected void onProgressUpdate(String... values) {
+
+                super.onProgressUpdate(values);
+            }
+        };
+        reader.execute();
+    }
 
 }
 
