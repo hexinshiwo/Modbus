@@ -22,9 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -126,7 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initview() {
-        getIpAndPort();
         connect_timer = new Timer();
         timer = new Timer();
         BindView();
@@ -190,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!power_switch.isChecked()) {
                     connect_timer.cancel();
                 } else {
+                    getIpAndPort();
                     connect();
                     createTask();
                     connect_timer = new Timer();
@@ -321,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void connect() {
         if (socket_1 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -332,10 +330,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_2 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -346,10 +344,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_3 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -360,10 +358,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_4 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -374,10 +372,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_5 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -388,10 +386,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_6 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -402,10 +400,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_7 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -416,10 +414,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_8 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -430,10 +428,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_9 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -444,10 +442,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_10 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -458,10 +456,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
         if (socket_11 == null) {
-            new Thread(new Runnable() {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
@@ -472,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     }
                 }
-            }).run();
+            }.start();
         }
     }
 
