@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView input_rate, inpute_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
     private TextView track_1, track_2, track_3, track_4, track_5, track_6, track_7, track_8, track_9, track_10;
     private Socket socket_1, socket_2, socket_3, socket_4, socket_5, socket_6, socket_7, socket_8, socket_9, socket_10, socket_11;
-    private Thread thread_1, thread_2, thread_3, thread_4, thread_5, thread_6, thread_7, thread_8, thread_9, thread_10, thread_11;
     private String ip_1, ip_2, ip_3, ip_4, ip_5, ip_6, ip_7, ip_8, ip_9, ip_10, ip_11;
     private int port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11;
     private ViewPager viewPager;
@@ -157,18 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lineChartView.setViewportCalculationEnabled(false);
         lineChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
         lineChartView.startDataAnimation();
-
-        socket_1 = new Socket();
-        socket_2 = new Socket();
-        socket_3 = new Socket();
-        socket_4 = new Socket();
-        socket_5 = new Socket();
-        socket_6 = new Socket();
-        socket_7 = new Socket();
-        socket_8 = new Socket();
-        socket_9 = new Socket();
-        socket_10 = new Socket();
-        socket_11 = new Socket();
     }
 
     public void BindView() {
@@ -203,17 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!power_switch.isChecked()) {
                     connect_timer.cancel();
                 } else {
-                    connect(socket_1, ip_1, port_1);
-                    connect(socket_2, ip_2, port_2);
-                    connect(socket_3, ip_3, port_3);
-                    connect(socket_4, ip_4, port_4);
-                    connect(socket_5, ip_5, port_5);
-                    connect(socket_6, ip_6, port_6);
-                    connect(socket_7, ip_7, port_7);
-                    connect(socket_8, ip_8, port_8);
-                    connect(socket_9, ip_9, port_9);
-                    connect(socket_10, ip_10, port_10);
-                    connect(socket_11, ip_11, port_11);
+                    connect();
                     createTask();
                     connect_timer = new Timer();
                     connect_timer.schedule(connect_timertask, 50, 500);
@@ -342,16 +319,155 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cur.close();
     }
 
-    public void connect(final Socket s, final String ip, final int port) {
-        if (s != null) {
+    public void connect() {
+        if (socket_1 == null) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    SocketAddress socketAddress = new InetSocketAddress(ip, port);
                     try {
-                        s.connect(socketAddress, 2000);
-                        s.setSoTimeout(2000);
-                        s.setTcpNoDelay(true);
+                        socket_1 = new Socket(ip_1, port_1);
+                        socket_1.setSoTimeout(2000);
+                        socket_1.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_2 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_2 = new Socket(ip_2, port_2);
+                        socket_2.setSoTimeout(2000);
+                        socket_2.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_3 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_3 = new Socket(ip_3, port_3);
+                        socket_3.setSoTimeout(2000);
+                        socket_3.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_4 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_4 = new Socket(ip_4, port_4);
+                        socket_4.setSoTimeout(2000);
+                        socket_4.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_5 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_5 = new Socket(ip_5, port_5);
+                        socket_5.setSoTimeout(2000);
+                        socket_5.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_6 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_6 = new Socket(ip_6, port_6);
+                        socket_6.setSoTimeout(2000);
+                        socket_6.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_7 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_7 = new Socket(ip_7, port_7);
+                        socket_7.setSoTimeout(2000);
+                        socket_7.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_8 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_8 = new Socket(ip_8, port_8);
+                        socket_8.setSoTimeout(2000);
+                        socket_8.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_9 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_9 = new Socket(ip_9, port_9);
+                        socket_9.setSoTimeout(2000);
+                        socket_9.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_10 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_10 = new Socket(ip_10, port_10);
+                        socket_10.setSoTimeout(2000);
+                        socket_10.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+        if (socket_11 == null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        socket_11 = new Socket(ip_11, port_11);
+                        socket_11.setSoTimeout(2000);
+                        socket_11.setTcpNoDelay(true);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
