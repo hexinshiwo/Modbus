@@ -1,5 +1,6 @@
 package com.example.xinhe002614.modbustest;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
@@ -8,13 +9,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.xinhe002614.modbustest.Unit.ModbusUnit;
-
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
@@ -29,11 +41,24 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
-public class MainActivity extends AppCompatActivity {
+import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static byte[] REQ_PRIMARY_COIL = {0x3A, 0x05, 0x04, 0x00, 0x00, 0x00, 0x10};//向原边寄存器发送的命令
+    private static byte[] REQ_SECOND_COIL = {0x3A, 0x05, 0x04, 0x00, 0x10, 0x00, 0x18};//向副边寄存器发送的命令
     private SQLiteDatabase modbus;
     private PagerAdapter pagerAdapter;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    private DataInputStream dis;
+    private DataOutputStream dos;
+    private byte readBuffer[] = new byte[80];
     private TextView input_rate, inpute_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
     private TextView track_1, track_2, track_3, track_4, track_5, track_6, track_7, track_8, track_9, track_10;
+    private Socket socket_1, socket_2, socket_3, socket_4, socket_5, socket_6, socket_7, socket_8, socket_9, socket_10, socket_11;
+    private Thread thread_1, thread_2, thread_3, thread_4, thread_5, thread_6, thread_7, thread_8, thread_9, thread_10, thread_11;
+    private String ip_1, ip_2, ip_3, ip_4, ip_5, ip_6, ip_7, ip_8, ip_9, ip_10, ip_11;
+    private int port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11;
     private ViewPager viewPager;
     private CheckBox power_switch;
     private LineChartData lineChartData;
@@ -42,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private List<PointValue> pointValueList;
     private PointValue value;
     private PointValue last_value;
-    private Timer timer;
+    private Timer timer, connect_timer;
+    private TimerTask connect_timertask;
     private Axis axisY, axisX;
     private int real_time = 0;
     private Random random;
@@ -58,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         modbus = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString() + "/modbus.db3", null);
-        try {//创建抢红包数据表
+        try {
             modbus.execSQL("create table ip_table(" + "_id integer primary key autoincrement,"
                     + "ip_address varchar(20)," + "port varchar(20))");
             initDatabase();
@@ -66,14 +92,13 @@ public class MainActivity extends AppCompatActivity {
             Log.w("Exception", se.toString());
         }
         initview();
-        showChangeLineChart();
+        //showChangeLineChart();
     }
 
     /**
-     * 这个是模拟实时获取数据的一个计时器，大家可以根据实际情况修改
+     * 这个是模拟实时获取数据的一个计时器，可以根据实际情况修改
      */
     private void showChangeLineChart() {
-        timer = new Timer();
         final TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -98,16 +123,13 @@ public class MainActivity extends AppCompatActivity {
                 if (real_time <= record_num) real_time++;
             }
         };
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                timer.schedule(timerTask, 50, 50);
-            }
-        });
-        thread.run();
+        timer.schedule(timerTask, 50, 50);
     }
 
     public void initview() {
+        getIpAndPort();
+        connect_timer = new Timer();
+        timer = new Timer();
         BindView();
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
         viewPager.setOffscreenPageLimit(2);
@@ -135,7 +157,18 @@ public class MainActivity extends AppCompatActivity {
         lineChartView.setViewportCalculationEnabled(false);
         lineChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
         lineChartView.startDataAnimation();
-        ModbusUnit.createThreadPoolSendAllQequest("手动输入ip地址",8888,1);//开始连接服务器
+
+        socket_1 = new Socket();
+        socket_2 = new Socket();
+        socket_3 = new Socket();
+        socket_4 = new Socket();
+        socket_5 = new Socket();
+        socket_6 = new Socket();
+        socket_7 = new Socket();
+        socket_8 = new Socket();
+        socket_9 = new Socket();
+        socket_10 = new Socket();
+        socket_11 = new Socket();
     }
 
     public void BindView() {
@@ -149,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
         BUCK_elect = (TextView) findViewById(R.id.BUCK_elect);
         temp = (TextView) findViewById(R.id.temp);
         power_switch = (CheckBox) findViewById(R.id.power_switch);
+        power_switch.setOnClickListener(this);
 
         track_1 = (TextView) findViewById(R.id.track_1);
         track_2 = (TextView) findViewById(R.id.track_2);
@@ -160,6 +194,51 @@ public class MainActivity extends AppCompatActivity {
         track_8 = (TextView) findViewById(R.id.track_8);
         track_9 = (TextView) findViewById(R.id.track_9);
         track_10 = (TextView) findViewById(R.id.track_10);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.power_switch:
+                if (!power_switch.isChecked()) {
+                    connect_timer.cancel();
+                } else {
+                    connect(socket_1, ip_1, port_1);
+                    connect(socket_2, ip_2, port_2);
+                    connect(socket_3, ip_3, port_3);
+                    connect(socket_4, ip_4, port_4);
+                    connect(socket_5, ip_5, port_5);
+                    connect(socket_6, ip_6, port_6);
+                    connect(socket_7, ip_7, port_7);
+                    connect(socket_8, ip_8, port_8);
+                    connect(socket_9, ip_9, port_9);
+                    connect(socket_10, ip_10, port_10);
+                    connect(socket_11, ip_11, port_11);
+                    createTask();
+                    connect_timer = new Timer();
+                    connect_timer.schedule(connect_timertask, 50, 500);
+                }
+                break;
+        }
+    }
+
+    private void createTask() {
+        connect_timertask = new TimerTask() {
+            @Override
+            public void run() {
+                sendData(socket_1, 0);
+                sendData(socket_2, 0);
+                sendData(socket_3, 0);
+                sendData(socket_4, 0);
+                sendData(socket_5, 0);
+                sendData(socket_6, 0);
+                sendData(socket_7, 0);
+                sendData(socket_8, 0);
+                sendData(socket_9, 0);
+                sendData(socket_10, 0);
+                sendData(socket_11, 1);
+            }
+        };
     }
 
     private LineChartData initDatas(List<Line> lines) {
@@ -181,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
+        connect_timer.cancel();
     }
 
     private void initData() {
@@ -211,5 +291,98 @@ public class MainActivity extends AppCompatActivity {
         modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6909"});
         modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6910"});
         modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6911"});
+    }
+
+    public void getIpAndPort() {
+        Cursor cur = modbus.rawQuery("select * from ip_table", null);
+        if (cur.moveToNext()) {
+            ip_1 = cur.getString(1);
+            port_1 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_2 = cur.getString(1);
+            port_2 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_3 = cur.getString(1);
+            port_3 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_4 = cur.getString(1);
+            port_4 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_5 = cur.getString(1);
+            port_5 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_6 = cur.getString(1);
+            port_6 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_7 = cur.getString(1);
+            port_7 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_8 = cur.getString(1);
+            port_8 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_9 = cur.getString(1);
+            port_9 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_10 = cur.getString(1);
+            port_10 = cur.getInt(2);
+        }
+        if (cur.moveToNext()) {
+            ip_11 = cur.getString(1);
+            port_11 = cur.getInt(2);
+        }
+        cur.close();
+    }
+
+    public void connect(final Socket s, final String ip, final int port) {
+        if (s != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    SocketAddress socketAddress = new InetSocketAddress(ip, port);
+                    try {
+                        s.connect(socketAddress, 2000);
+                        s.setSoTimeout(2000);
+                        s.setTcpNoDelay(true);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).run();
+        }
+    }
+
+    public void sendData(Socket socket, int tag) {
+        if (socket != null) {
+            int count = 0;
+            try {
+                //oos = new ObjectOutputStream(socket.getOutputStream());
+                dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
+                if (tag == 0) dos.write(REQ_PRIMARY_COIL);// 发送消息给原边
+                else dos.write(REQ_SECOND_COIL);// 发送消息给副边
+                //oos.flush();
+                dos.flush();
+                //ois = new ObjectInputStream(socket.getInputStream());
+                dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+//                DataInput dataInput = null;
+//                dataInput = (DataInput) ois.readObject();
+                count = dis.read(readBuffer);
+                if (count != 0) receiveData();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void receiveData() {
+        showToast(this, "接收到数据" + Arrays.toString(readBuffer), Toast.LENGTH_LONG);
     }
 }
