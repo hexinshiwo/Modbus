@@ -215,15 +215,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                sendData(socket_9, 0);
 //                sendData(socket_10, 0);
 //                sendData(socket_11, 1);
-                socketUnit=new SocketUnit(1);
+                socketUnit=new SocketUnit(1,MainActivity.this);
                 socketUnit.connect();
-              if(SocketUnit.DATE_FROM_COIL!=null)
-              {
-                  receiveData();
-              }
-
-
-
             }
         };
     }
