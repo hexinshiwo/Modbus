@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Looper;
 import android.widget.Toast;
 
+import com.example.xinhe002614.modbustest.MainActivity;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -37,17 +39,22 @@ public class SocketUnit {
                Looper.prepare();
                System.out.println("Waiting");
                Toast.makeText(context, "连接中", Toast.LENGTH_LONG).show();
+               Looper.loop();
                Socket socket = e.accept();
                System.out.println("Connecting");
+               Looper.prepare();
                Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
+               Looper.loop();
                ConnectSocket cs = new ConnectSocket(socket, this.vector);
                this.add(cs);
                cs.start();
                if(DATE_FROM_COIL!=null)
                {
+                   Looper.prepare();
                    Toast.makeText(context, "接收到数据" + Arrays.toString(DATE_FROM_COIL), Toast.LENGTH_LONG).show();
+                   Looper.loop();
                }
-               Looper.loop();
+
            }
        } catch (IOException var4) {
            var4.printStackTrace();
