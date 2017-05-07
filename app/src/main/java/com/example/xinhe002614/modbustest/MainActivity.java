@@ -15,6 +15,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xinhe002614.modbustest.Unit.SocketUnit;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -44,6 +46,7 @@ import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static byte[] REQ_PRIMARY_COIL = {0x3A, 0x05, 0x04, 0x00, 0x00, 0x00, 0x10};//向原边寄存器发送的命令
     private static byte[] REQ_SECOND_COIL = {0x3A, 0x05, 0x04, 0x00, 0x10, 0x00, 0x18};//向副边寄存器发送的命令
+    private SocketUnit socketUnit;
     private SQLiteDatabase modbus;
     private PagerAdapter pagerAdapter;
     private ObjectOutputStream oos;
@@ -188,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     connect_timer.cancel();
                 } else {
                     getIpAndPort();
-                    connect();
+                   // connect();
                     createTask();
                     connect_timer = new Timer();
                     connect_timer.schedule(connect_timertask, 50, 500);
@@ -201,17 +204,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         connect_timertask = new TimerTask() {
             @Override
             public void run() {
-                sendData(socket_1, 0);
-                sendData(socket_2, 0);
-                sendData(socket_3, 0);
-                sendData(socket_4, 0);
-                sendData(socket_5, 0);
-                sendData(socket_6, 0);
-                sendData(socket_7, 0);
-                sendData(socket_8, 0);
-                sendData(socket_9, 0);
-                sendData(socket_10, 0);
-                sendData(socket_11, 1);
+//                sendData(socket_1, 0);
+//                sendData(socket_2, 0);
+//                sendData(socket_3, 0);
+//                sendData(socket_4, 0);
+//                sendData(socket_5, 0);
+//                sendData(socket_6, 0);
+//                sendData(socket_7, 0);
+//                sendData(socket_8, 0);
+//                sendData(socket_9, 0);
+//                sendData(socket_10, 0);
+//                sendData(socket_11, 1);
+                socketUnit=new SocketUnit(1);
+                socketUnit.connect();
+              if(SocketUnit.DATE_FROM_COIL!=null)
+              {
+                  receiveData();
+              }
+
+
+
             }
         };
     }
@@ -497,6 +509,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void receiveData() {
-        showToast(this, "接收到数据" + Arrays.toString(readBuffer), Toast.LENGTH_LONG);
+        showToast(this, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG);
     }
 }
