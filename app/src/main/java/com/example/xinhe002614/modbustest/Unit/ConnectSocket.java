@@ -1,5 +1,7 @@
 package com.example.xinhe002614.modbustest.Unit;
 
+import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -28,14 +30,17 @@ import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
 
 public class ConnectSocket extends Thread {
     Socket socket;
+    Context context;
     DataInputStream dis = null;
     DataOutputStream dos=null;
     Vector<ConnectSocket> vector;
 
 
-    public ConnectSocket(Socket s, Vector<ConnectSocket> vector) {
+    public ConnectSocket(Socket s, Vector<ConnectSocket> vector,Context context) {
         this.socket = s;
         this.vector = vector;
+        this.context=context;
+        Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
     }
 
     public void out( byte[] obj) {
@@ -55,6 +60,7 @@ public class ConnectSocket extends Thread {
 
     public void run() {
         try {
+
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         } catch (IOException var13) {
@@ -62,6 +68,14 @@ public class ConnectSocket extends Thread {
         }
 
         try {
+            if(SocketUnit.DATE_FROM_COIL!=null)
+            {
+
+                Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+
             dis.read( SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
             this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
         } catch (IOException var12) {

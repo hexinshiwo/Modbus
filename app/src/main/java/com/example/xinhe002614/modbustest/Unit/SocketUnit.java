@@ -34,28 +34,27 @@ public class SocketUnit {
    {
        try {
            ServerSocket e = new ServerSocket(3325);
-
+           Looper.prepare();
            while(true) {
-               Looper.prepare();
+            //   Looper.prepare();
                System.out.println("Waiting");
                Toast.makeText(context, "连接中", Toast.LENGTH_LONG).show();
                Looper.loop();
                Socket socket = e.accept();
+
                System.out.println("Connecting");
-               Looper.prepare();
-               Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
-               Looper.loop();
-               ConnectSocket cs = new ConnectSocket(socket, this.vector);
+               ConnectSocket cs = new ConnectSocket(socket, this.vector,context);
                this.add(cs);
                cs.start();
                if(DATE_FROM_COIL!=null)
                {
-                   Looper.prepare();
+
                    Toast.makeText(context, "接收到数据" + Arrays.toString(DATE_FROM_COIL), Toast.LENGTH_LONG).show();
-                   Looper.loop();
+               //    Looper.loop();
                }
 
            }
+
        } catch (IOException var4) {
            var4.printStackTrace();
        }
