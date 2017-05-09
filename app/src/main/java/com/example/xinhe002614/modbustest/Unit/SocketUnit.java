@@ -2,18 +2,12 @@ package com.example.xinhe002614.modbustest.Unit;
 
 import android.content.Context;
 import android.os.Looper;
-import android.os.Message;
 import android.widget.Toast;
-
-import com.example.xinhe002614.modbustest.MainActivity;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Arrays;
 import java.util.Vector;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
 

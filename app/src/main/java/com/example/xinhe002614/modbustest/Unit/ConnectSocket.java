@@ -36,10 +36,17 @@ public class ConnectSocket extends Thread {
     Vector<ConnectSocket> vector;
 
 
+<<<<<<< HEAD
     public ConnectSocket(Socket s, Vector<ConnectSocket> vector, Context context) {
         this.context = context;
         this.socket = s;
         this.vector = vector;
+=======
+    public ConnectSocket(Socket s, Vector<ConnectSocket> vector,Context context) {
+        this.socket = s;
+        this.vector = vector;
+        this.context=context;
+>>>>>>> 78390f4fdf6caa0defff67236dce89005bd851dc
         Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
     }
 
@@ -59,6 +66,7 @@ public class ConnectSocket extends Thread {
 
     public void run() {
         try {
+
             dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
         } catch (IOException var13) {
@@ -66,11 +74,23 @@ public class ConnectSocket extends Thread {
         }
 
         try {
+<<<<<<< HEAD
             if (SocketUnit.DATE_FROM_COIL != null) {
                 Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
                 Looper.loop();
             }
             dis.read(SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
+=======
+            if(SocketUnit.DATE_FROM_COIL!=null)
+            {
+
+                Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+
+
+            dis.read( SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
+>>>>>>> 78390f4fdf6caa0defff67236dce89005bd851dc
             this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
         } catch (IOException var12) {
             var12.printStackTrace();
