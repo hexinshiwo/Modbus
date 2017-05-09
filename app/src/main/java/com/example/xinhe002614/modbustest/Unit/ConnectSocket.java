@@ -30,24 +30,14 @@ import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
 
 public class ConnectSocket extends Thread {
     Socket socket;
-    Context context;
     DataInputStream dis = null;
     DataOutputStream dos = null;
     Vector<ConnectSocket> vector;
 
 
-<<<<<<< HEAD
     public ConnectSocket(Socket s, Vector<ConnectSocket> vector, Context context) {
-        this.context = context;
         this.socket = s;
         this.vector = vector;
-=======
-    public ConnectSocket(Socket s, Vector<ConnectSocket> vector,Context context) {
-        this.socket = s;
-        this.vector = vector;
-        this.context=context;
->>>>>>> 78390f4fdf6caa0defff67236dce89005bd851dc
-        Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
     }
 
     public void out(byte[] obj) {
@@ -73,28 +63,8 @@ public class ConnectSocket extends Thread {
             var13.printStackTrace();
         }
 
-        try {
-<<<<<<< HEAD
-            if (SocketUnit.DATE_FROM_COIL != null) {
-                Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-            dis.read(SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
-=======
-            if(SocketUnit.DATE_FROM_COIL!=null)
-            {
-
-                Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
-                Looper.loop();
-            }
-
-
-            dis.read( SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
->>>>>>> 78390f4fdf6caa0defff67236dce89005bd851dc
-            this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
-        } catch (IOException var12) {
-            var12.printStackTrace();
-        }
+        
+        this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
 
 
     }
