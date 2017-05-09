@@ -1,5 +1,7 @@
 package com.example.xinhe002614.modbustest.Unit;
 
+import android.content.Context;
+import android.os.Looper;
 import android.widget.Toast;
 
 import java.io.BufferedInputStream;
@@ -28,20 +30,22 @@ import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
 
 public class ConnectSocket extends Thread {
     Socket socket;
+    Context context;
     DataInputStream dis = null;
-    DataOutputStream dos=null;
+    DataOutputStream dos = null;
     Vector<ConnectSocket> vector;
 
 
-    public ConnectSocket(Socket s, Vector<ConnectSocket> vector) {
+    public ConnectSocket(Socket s, Vector<ConnectSocket> vector, Context context) {
+        this.context = context;
         this.socket = s;
         this.vector = vector;
+        Toast.makeText(context, "连接成功", Toast.LENGTH_LONG).show();
     }
 
-    public void out( byte[] obj) {
+    public void out(byte[] obj) {
         try {
-            if(dos!=null)
-            {
+            if (dos != null) {
                 dos.write(obj);
                 dos.flush();
             }
@@ -62,7 +66,11 @@ public class ConnectSocket extends Thread {
         }
 
         try {
-            dis.read( SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
+            if (SocketUnit.DATE_FROM_COIL != null) {
+                Toast.makeText(context, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG).show();
+                Looper.loop();
+            }
+            dis.read(SocketUnit.DATE_FROM_COIL);//将接收到的数据存入SocketUnit之中
             this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
         } catch (IOException var12) {
             var12.printStackTrace();
@@ -72,21 +80,18 @@ public class ConnectSocket extends Thread {
     }
 
 
-    public void sendMessage(ConnectSocket cs, int  tag) {
-        if(tag==0)
-    {
-        out(SocketUnit.REQ_PRIMARY_COIL);// 发送消息给原边
-    }
-        else
-    {
-        out(SocketUnit.REQ_SECOND_COIL);// 发送消息给副边
-    }
+    public void sendMessage(ConnectSocket cs, int tag) {
+        if (tag == 0) {
+            out(SocketUnit.REQ_PRIMARY_COIL);// 发送消息给原边
+        } else {
+            out(SocketUnit.REQ_SECOND_COIL);// 发送消息给副边
+        }
     }
 
     private void delay(int ms) {
         try {
             Thread.currentThread();
-            Thread.sleep((long)ms);
+            Thread.sleep((long) ms);
         } catch (InterruptedException var3) {
             var3.printStackTrace();
         }

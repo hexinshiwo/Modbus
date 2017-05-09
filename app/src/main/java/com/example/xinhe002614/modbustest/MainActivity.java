@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.model.Axis;
@@ -190,8 +193,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (!power_switch.isChecked()) {
                     connect_timer.cancel();
                 } else {
-                    getIpAndPort();
-                   // connect();
+                    showToast(this, "连接中", Toast.LENGTH_LONG);
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            socketUnit = new SocketUnit(1, MainActivity.this);
+                            socketUnit.connect(socket_1);
+                        }
+                    }.start();
                     createTask();
                     connect_timer = new Timer();
                     connect_timer.schedule(connect_timertask, 50, 500);
@@ -215,8 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                sendData(socket_9, 0);
 //                sendData(socket_10, 0);
 //                sendData(socket_11, 1);
-                socketUnit=new SocketUnit(1,MainActivity.this);
-                socketUnit.connect();
             }
         };
     }
@@ -260,17 +267,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initDatabase() {
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6901"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6902"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6903"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6904"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6905"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6906"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6907"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6908"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6909"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6910"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"192.168.1.255", "6911"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
     }
 
     public void getIpAndPort() {
@@ -502,6 +509,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void receiveData() {
-        showToast(this, "接收到数据" + Arrays.toString(SocketUnit.DATE_FROM_COIL), Toast.LENGTH_LONG);
+        showToast(this, "接收到数据" + Arrays.toString(readBuffer), Toast.LENGTH_LONG);
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
