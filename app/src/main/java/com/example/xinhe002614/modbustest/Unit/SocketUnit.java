@@ -2,6 +2,7 @@ package com.example.xinhe002614.modbustest.Unit;
 
 import android.content.Context;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -28,20 +29,19 @@ public class SocketUnit {
         this.context = context;
     }
 
-    public void connect(Socket socket) {
+    public Socket connect() {
+        Socket socket = null;
         try {
             ServerSocket e = new ServerSocket(3325);
-            Looper.prepare();
             System.out.println("Waiting");
 
             socket = e.accept();
 
-            System.out.println("Connecting");
-            showToast(context, "连接成功", Toast.LENGTH_LONG);
-            Looper.loop();
+            System.out.println("Connecting success");
         } catch (IOException var4) {
             var4.printStackTrace();
         }
+        return socket;
     }
 
     public void add(ConnectSocket csSocket) {

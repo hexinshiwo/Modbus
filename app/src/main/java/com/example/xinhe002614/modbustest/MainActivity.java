@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -52,14 +53,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SocketUnit socketUnit;
     private SQLiteDatabase modbus;
     private PagerAdapter pagerAdapter;
-    private ObjectOutputStream oos;
-    private ObjectInputStream ois;
     private DataInputStream dis;
     private DataOutputStream dos;
     private byte readBuffer[] = new byte[80];
     private TextView input_rate, inpute_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
     private TextView track_1, track_2, track_3, track_4, track_5, track_6, track_7, track_8, track_9, track_10;
-    private Socket socket_1, socket_2, socket_3, socket_4, socket_5, socket_6, socket_7, socket_8, socket_9, socket_10, socket_11;
+    private Socket socket_1 = null, socket_2, socket_3, socket_4, socket_5, socket_6, socket_7, socket_8, socket_9, socket_10, socket_11;
     private String ip_1, ip_2, ip_3, ip_4, ip_5, ip_6, ip_7, ip_8, ip_9, ip_10, ip_11;
     private int port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11;
     private ViewPager viewPager;
@@ -198,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
                             socketUnit = new SocketUnit(1, MainActivity.this);
-                            socketUnit.connect(socket_1);
+                            socket_1 = socketUnit.connect();
                         }
                     }.start();
                     createTask();
@@ -213,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         connect_timertask = new TimerTask() {
             @Override
             public void run() {
-//                sendData(socket_1, 0);
+                sendData(socket_1, 0);
 //                sendData(socket_2, 0);
 //                sendData(socket_3, 0);
 //                sendData(socket_4, 0);
@@ -490,18 +489,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (socket != null) {
             int count = 0;
             try {
-                //oos = new ObjectOutputStream(socket.getOutputStream());
                 dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
                 if (tag == 0) dos.write(REQ_PRIMARY_COIL);// 发送消息给原边
                 else dos.write(REQ_SECOND_COIL);// 发送消息给副边
-                //oos.flush();
                 dos.flush();
-                //ois = new ObjectInputStream(socket.getInputStream());
                 dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-//                DataInput dataInput = null;
-//                dataInput = (DataInput) ois.readObject();
                 count = dis.read(readBuffer);
-                if (count != 0) receiveData();
+                if (count != -1) {
+                    receiveData();
+                } else {
+                    System.out.println("未接收到数据");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -509,11 +507,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void receiveData() {
-        showToast(this, "接收到数据" + Arrays.toString(readBuffer), Toast.LENGTH_LONG);
-        try {
-            ois.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("接收到数据" + Arrays.toString(readBuffer));
     }
 }
