@@ -64,19 +64,13 @@ public class ConnectSocket extends Thread {
         }
 
         
-        this.sendMessage(this, SocketUnit.TAG);//根据TAG来发送数据
+
 
 
     }
 
 
-    public void sendMessage(ConnectSocket cs, int tag) {
-        if (tag == 0) {
-            out(SocketUnit.REQ_PRIMARY_COIL);// 发送消息给原边
-        } else {
-            out(SocketUnit.REQ_SECOND_COIL);// 发送消息给副边
-        }
-    }
+
 
     private void delay(int ms) {
         try {

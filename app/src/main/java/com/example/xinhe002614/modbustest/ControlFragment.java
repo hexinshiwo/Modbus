@@ -10,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.xinhe002614.modbustest.Unit.SocketUnit;
 import com.wx.wheelview.adapter.ArrayWheelAdapter;
 import com.wx.wheelview.widget.WheelView;
 
 import java.util.ArrayList;
+
+import static com.example.xinhe002614.modbustest.MainActivity.socket_11;
 
 /**
  * Created by Whisper on 2017/4/25.
@@ -22,8 +25,19 @@ import java.util.ArrayList;
 public class ControlFragment extends Fragment {
     private View mRoot;
     private Context context;
+    private SocketUnit socketUnit;
     private Button forward_btn, backward_btn, stop_btn, coil_up, coil_down, cruise_control;
     private SQLiteDatabase modbus;
+    private static final byte[] MOVE_FORWARD = {0x3A, 0x05, 0x06, 0x00, 0x30, 0x7F, 0x00};//前进
+    private static final byte[] MOVE_BACKWARD = {0x3A, 0x05, 0x06, 0x00, 0x30, 0x00, 0x00};//后退
+    private static final byte[] STOP = {0x3A, 0x05, 0x06, 0x00, 0x31, 0x7F, 0x00};//刹车
+    private static final byte[] COIL_UP = {0x3A, 0x05, 0x06, 0x00, 0x33, 0x7F, 0x00};//线圈升
+    private static final byte[] COIL_DOWN = {0x3A, 0x05, 0x06, 0x00, 0x33, 0x00, 0x00};//线圈降
+    private static final byte[] OPEN_CRUISE_CONTROL = {0x3A, 0x05, 0x06, 0x00, 0x34, 0x7F, 0x00};//定速巡航开
+    private static final byte[] SHUT_CRUISE_CONTROL = {0x3A, 0x05, 0x06, 0x00, 0x34, 0x00, 0x00};//定速巡航关
+    private static final byte[] SPEED = {0x3A, 0x0E, 0x10, 0x00, 0x35, 0x00, 0x04, 0x08,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};//发速度
+    private int cruise = 0;
 
     public static ControlFragment newInstance(int index) {
         ControlFragment fragment = new ControlFragment();
@@ -52,6 +66,7 @@ public class ControlFragment extends Fragment {
     }
 
     public void initView() {
+        socketUnit = new SocketUnit(context);
         initWheel();
         forward_btn = (Button) mRoot.findViewById(R.id.forward_btn);
         backward_btn = (Button) mRoot.findViewById(R.id.backward_btn);
@@ -72,26 +87,32 @@ public class ControlFragment extends Fragment {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.forward_btn:
-
+                    socketUnit.sendControl(socket_11, MOVE_FORWARD);
                     break;
                 case R.id.backward_btn:
-
+                    socketUnit.sendControl(socket_11, MOVE_BACKWARD);
                     break;
                 case R.id.stop_btn:
-
+                    socketUnit.sendControl(socket_11, STOP);
                     break;
                 case R.id.coil_up:
-
+                    socketUnit.sendControl(socket_11, COIL_UP);
                     break;
                 case R.id.coil_down:
-
+                    socketUnit.sendControl(socket_11, COIL_DOWN);
                     break;
                 case R.id.cruise_control:
-//                    try {
-//                        modbus.execSQL("drop table ip_table");//删除整个表
-//                    } catch (SQLiteException ignored) {
-//
-//                    }
+                    if (cruise == 0) {
+                        cruise_control.setText(R.string.cruise_control_open);
+                        socketUnit.sendControl(socket_11, OPEN_CRUISE_CONTROL);
+                        cruise = 1;
+                    } else {
+                        cruise_control.setText(R.string.cruise_control_close);
+                        socketUnit.sendControl(socket_11, SHUT_CRUISE_CONTROL);
+                        cruise = 0;
+                    }
+                    break;
+                default:
                     break;
             }
         }

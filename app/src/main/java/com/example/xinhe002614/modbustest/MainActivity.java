@@ -1,11 +1,15 @@
 package com.example.xinhe002614.modbustest;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -15,26 +19,15 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.xinhe002614.modbustest.Unit.SocketUnit;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import lecho.lib.hellocharts.gesture.ContainerScrollType;
 import lecho.lib.hellocharts.model.Axis;
@@ -45,22 +38,21 @@ import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
-import static com.example.xinhe002614.modbustest.Unit.CommonUnit.showToast;
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static byte[] REQ_PRIMARY_COIL = {0x3A, 0x05, 0x04, 0x00, 0x00, 0x00, 0x10};//向原边寄存器发送的命令
-    private static byte[] REQ_SECOND_COIL = {0x3A, 0x05, 0x04, 0x00, 0x10, 0x00, 0x18};//向副边寄存器发送的命令
+    private static final byte[] OPEN_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x7F, 0x00};//开电源
+    private static final byte[] SHUT_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x00, 0x00};//关电源
     private SocketUnit socketUnit;
     private SQLiteDatabase modbus;
     private PagerAdapter pagerAdapter;
-    private DataInputStream dis;
-    private DataOutputStream dos;
-    private byte readBuffer[] = new byte[80];
-    private TextView input_rate, inpute_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
+    private TextView input_rate, input_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
     private TextView track_1, track_2, track_3, track_4, track_5, track_6, track_7, track_8, track_9, track_10;
-    private Socket socket_1 = null, socket_2, socket_3, socket_4, socket_5, socket_6, socket_7, socket_8, socket_9, socket_10, socket_11;
+    private Socket socket_1 = null, socket_2 = null, socket_3 = null, socket_4 = null, socket_5 = null, socket_6 = null, socket_7 = null, socket_8 = null, socket_9 = null, socket_10 = null;
+    public static Socket socket_11 = null;
     private String ip_1, ip_2, ip_3, ip_4, ip_5, ip_6, ip_7, ip_8, ip_9, ip_10, ip_11;
     private int port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11;
+    private TimerTask connect_timertask_1, connect_timertask_2, connect_timertask_3, connect_timertask_4, connect_timertask_5, connect_timertask_6, connect_timertask_7, connect_timertask_8, connect_timertask_9, connect_timertask_10, connect_timertask_11;
+    private Timer connect_timer_1, connect_timer_2, connect_timer_3, connect_timer_4, connect_timer_5, connect_timer_6, connect_timer_7, connect_timer_8, connect_timer_9, connect_timer_10, connect_timer_11;
+    private Timer timer;
     private ViewPager viewPager;
     private CheckBox power_switch;
     private LineChartData lineChartData;
@@ -69,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<PointValue> pointValueList;
     private PointValue value;
     private PointValue last_value;
-    private Timer timer, connect_timer;
-    private TimerTask connect_timertask;
     private Axis axisY, axisX;
     private int real_time = 0;
     private Random random;
@@ -78,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LineChartData data;
     private Viewport port;
     private static int record_num = 200;
+    public static Handler handler;
+    public final static int READ_COIL_1 = 11;
+    public final static int READ_COIL_2 = 12;
+    public final static int TRACK1 = 1, TRACK2 = 2, TRACK3 = 3, TRACK4 = 4, TRACK5 = 5,
+            TRACK6 = 6, TRACK7 = 7, TRACK8 = 8, TRACK9 = 9, TRACK10 = 10, SAVE = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +89,100 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.w("Exception", se.toString());
         }
         initview();
+        initHandler();
+        getIpAndPort();
+        createTask();
         //showChangeLineChart();
+    }
+
+    private void initHandler() {
+        handler = new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case READ_COIL_1:
+                        readcoil1();
+                        break;
+                    case READ_COIL_2:
+                        readcoil2();
+                        changeSpeed();
+                        break;
+                    case TRACK1:
+                        startTranslation(track_1, socket_1);
+                        break;
+                    case TRACK2:
+                        startTranslation(track_2, socket_2);
+                        break;
+                    case TRACK3:
+                        startTranslation(track_3, socket_3);
+                        break;
+                    case TRACK4:
+                        startTranslation(track_4, socket_4);
+                        break;
+                    case TRACK5:
+                        startTranslation(track_5, socket_5);
+                        break;
+                    case TRACK6:
+                        startTranslation(track_6, socket_6);
+                        break;
+                    case TRACK7:
+                        startTranslation(track_7, socket_7);
+                        break;
+                    case TRACK8:
+                        startTranslation(track_8, socket_8);
+                        break;
+                    case TRACK9:
+                        startTranslation(track_9, socket_9);
+                        break;
+                    case TRACK10:
+                        startTranslation(track_10, socket_10);
+                        break;
+                    case SAVE:
+                        cancel_timer();
+                        //TODO:关闭socket和端口
+                        getIpAndPort();
+                        createTask();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        };
+    }
+
+    private void readcoil1() {
+        input_rate.setText(socketUnit.Sinput_rate);
+        coil_elect_1.setText(socketUnit.Scoil_elect_1);
+        input_elect.setText(socketUnit.Sinput_elect);
+        input_voltage.setText(socketUnit.Sinput_voltage);
+    }
+
+    private void readcoil2() {
+        output_rate.setText(socketUnit.Soutput_rate);
+        coil_elect_2.setText(socketUnit.Scoil_elect_2);
+        BUCK_voltage.setText(socketUnit.SBUCK_voltage);
+        BUCK_elect.setText(socketUnit.SBUCK_elect);
+        temp.setText(socketUnit.Stemp);
+    }
+
+    private void changeSpeed() {
+        if (real_time <= record_num) {
+            value = new PointValue(real_time, socketUnit.Sspeed);
+            pointValueList.add(value);
+            real_time++;
+        } else {
+            for (int i = 0; i < record_num; i++) {
+                pointValueList.get(i).set(pointValueList.get(i).getX(), pointValueList.get(i + 1).getY());
+            }
+            pointValueList.remove(record_num);
+            last_value.set(record_num, socketUnit.Sspeed);
+            pointValueList.add(last_value);
+        }
+        //根据新的点的集合画出新的线
+        line.setValues(pointValueList);
+        linesList.clear();
+        linesList.add(line);
+        lineChartData = initDatas(linesList);
+        lineChartView.setLineChartData(lineChartData);
     }
 
     /**
@@ -108,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (real_time <= record_num) {
                     value = new PointValue(real_time, random.nextInt(20));
                     pointValueList.add(value);
+                    real_time++;
                 } else {
                     for (int i = 0; i < record_num; i++) {
                         pointValueList.get(i).set(pointValueList.get(i).getX(), pointValueList.get(i + 1).getY());
@@ -122,14 +211,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 linesList.add(line);
                 lineChartData = initDatas(linesList);
                 lineChartView.setLineChartData(lineChartData);
-                if (real_time <= record_num) real_time++;
             }
         };
         timer.schedule(timerTask, 50, 50);
     }
 
     public void initview() {
-        connect_timer = new Timer();
+        socketUnit = new SocketUnit(MainActivity.this);
+        new_timer();
         timer = new Timer();
         BindView();
         viewPager = (ViewPager) findViewById(R.id.main_view_pager);
@@ -162,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void BindView() {
         input_rate = (TextView) findViewById(R.id.input_rate);
-        inpute_elect = (TextView) findViewById(R.id.input_elect);
+        input_elect = (TextView) findViewById(R.id.input_elect);
         coil_elect_1 = (TextView) findViewById(R.id.coil_elect_1);
         input_voltage = (TextView) findViewById(R.id.input_voltage);
         output_rate = (TextView) findViewById(R.id.output_rate);
@@ -190,41 +279,194 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.power_switch:
                 if (!power_switch.isChecked()) {
-                    connect_timer.cancel();
+                    socketUnit.sendControl(socket_11, SHUT_POWER);
                 } else {
-                    showToast(this, "连接中", Toast.LENGTH_LONG);
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            socketUnit = new SocketUnit(1, MainActivity.this);
-                            socket_1 = socketUnit.connect();
-                        }
-                    }.start();
-                    createTask();
-                    connect_timer = new Timer();
-                    connect_timer.schedule(connect_timertask, 50, 500);
+                    socketUnit.sendControl(socket_11, OPEN_POWER);
                 }
                 break;
         }
     }
 
+    private void cancel_timer() {
+        connect_timer_1.cancel();
+        connect_timer_2.cancel();
+        connect_timer_3.cancel();
+        connect_timer_4.cancel();
+        connect_timer_5.cancel();
+        connect_timer_6.cancel();
+        connect_timer_7.cancel();
+        connect_timer_8.cancel();
+        connect_timer_9.cancel();
+        connect_timer_10.cancel();
+        connect_timer_11.cancel();
+    }
+
+    private void new_timer() {
+        connect_timer_1 = new Timer();
+        connect_timer_2 = new Timer();
+        connect_timer_3 = new Timer();
+        connect_timer_4 = new Timer();
+        connect_timer_5 = new Timer();
+        connect_timer_6 = new Timer();
+        connect_timer_7 = new Timer();
+        connect_timer_8 = new Timer();
+        connect_timer_9 = new Timer();
+        connect_timer_10 = new Timer();
+        connect_timer_11 = new Timer();
+    }
+
     private void createTask() {
-        connect_timertask = new TimerTask() {
+        connect_timertask_1 = new TimerTask() {
             @Override
             public void run() {
-                sendData(socket_1, 0);
-//                sendData(socket_2, 0);
-//                sendData(socket_3, 0);
-//                sendData(socket_4, 0);
-//                sendData(socket_5, 0);
-//                sendData(socket_6, 0);
-//                sendData(socket_7, 0);
-//                sendData(socket_8, 0);
-//                sendData(socket_9, 0);
-//                sendData(socket_10, 0);
-//                sendData(socket_11, 1);
+                if (socket_1 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK1;
+                    handler.sendMessage(msg);
+                    socket_1 = socketUnit.connect(port_1);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_1, 0);
             }
         };
+        connect_timertask_2 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_2 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK2;
+                    handler.sendMessage(msg);
+                    socket_2 = socketUnit.connect(port_2);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_2, 0);
+            }
+        };
+        connect_timertask_3 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_3 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK3;
+                    handler.sendMessage(msg);
+                    socket_3 = socketUnit.connect(port_3);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_3, 0);
+            }
+        };
+        connect_timertask_4 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_4 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK4;
+                    handler.sendMessage(msg);
+                    socket_4 = socketUnit.connect(port_4);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_4, 0);
+            }
+        };
+        connect_timertask_5 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_5 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK5;
+                    handler.sendMessage(msg);
+                    socket_5 = socketUnit.connect(port_5);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_5, 0);
+            }
+        };
+        connect_timertask_6 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_6 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK6;
+                    handler.sendMessage(msg);
+                    socket_6 = socketUnit.connect(port_6);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_6, 0);
+            }
+        };
+        connect_timertask_7 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_7 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK7;
+                    handler.sendMessage(msg);
+                    socket_7 = socketUnit.connect(port_7);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_7, 0);
+            }
+        };
+        connect_timertask_8 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_8 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK8;
+                    handler.sendMessage(msg);
+                    socket_8 = socketUnit.connect(port_8);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_8, 0);
+            }
+        };
+        connect_timertask_9 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_9 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK9;
+                    handler.sendMessage(msg);
+                    socket_9 = socketUnit.connect(port_9);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_9, 0);
+            }
+        };
+        connect_timertask_10 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_10 == null) {
+                    Message msg = Message.obtain();
+                    msg.what = TRACK10;
+                    handler.sendMessage(msg);
+                    socket_10 = socketUnit.connect(port_10);
+                    handler.sendMessage(msg);
+                } else
+                    socketUnit.sendData(socket_10, 0);
+            }
+        };
+        connect_timertask_11 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_11 == null)
+                    socket_11 = socketUnit.connect(port_11);
+                else
+                    socketUnit.sendData(socket_11, 1);
+            }
+        };
+        new_timer();
+        connect_timer_1.schedule(connect_timertask_1, 50, 500);
+        connect_timer_2.schedule(connect_timertask_2, 50, 500);
+        connect_timer_3.schedule(connect_timertask_3, 50, 500);
+        connect_timer_4.schedule(connect_timertask_4, 50, 500);
+        connect_timer_5.schedule(connect_timertask_5, 50, 500);
+        connect_timer_6.schedule(connect_timertask_6, 50, 500);
+        connect_timer_7.schedule(connect_timertask_7, 50, 500);
+        connect_timer_8.schedule(connect_timertask_8, 50, 500);
+        connect_timer_9.schedule(connect_timertask_9, 50, 500);
+        connect_timer_10.schedule(connect_timertask_10, 50, 500);
+        connect_timer_11.schedule(connect_timertask_11, 50, 500);
     }
 
     private LineChartData initDatas(List<Line> lines) {
@@ -246,7 +488,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onDestroy() {
         super.onDestroy();
         timer.cancel();
-        connect_timer.cancel();
+        cancel_timer();
     }
 
     private void initData() {
@@ -328,185 +570,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cur.close();
     }
 
-    public void connect() {
-        if (socket_1 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_1 = new Socket(ip_1, port_1);
-                        socket_1.setSoTimeout(2000);
-                        socket_1.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_2 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_2 = new Socket(ip_2, port_2);
-                        socket_2.setSoTimeout(2000);
-                        socket_2.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_3 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_3 = new Socket(ip_3, port_3);
-                        socket_3.setSoTimeout(2000);
-                        socket_3.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_4 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_4 = new Socket(ip_4, port_4);
-                        socket_4.setSoTimeout(2000);
-                        socket_4.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_5 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_5 = new Socket(ip_5, port_5);
-                        socket_5.setSoTimeout(2000);
-                        socket_5.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_6 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_6 = new Socket(ip_6, port_6);
-                        socket_6.setSoTimeout(2000);
-                        socket_6.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_7 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_7 = new Socket(ip_7, port_7);
-                        socket_7.setSoTimeout(2000);
-                        socket_7.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_8 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_8 = new Socket(ip_8, port_8);
-                        socket_8.setSoTimeout(2000);
-                        socket_8.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_9 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_9 = new Socket(ip_9, port_9);
-                        socket_9.setSoTimeout(2000);
-                        socket_9.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_10 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_10 = new Socket(ip_10, port_10);
-                        socket_10.setSoTimeout(2000);
-                        socket_10.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-        if (socket_11 == null) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        socket_11 = new Socket(ip_11, port_11);
-                        socket_11.setSoTimeout(2000);
-                        socket_11.setTcpNoDelay(true);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.start();
-        }
-    }
-
-    public void sendData(Socket socket, int tag) {
-        if (socket != null) {
-            int count = 0;
-            try {
-                dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                if (tag == 0) dos.write(REQ_PRIMARY_COIL);// 发送消息给原边
-                else dos.write(REQ_SECOND_COIL);// 发送消息给副边
-                dos.flush();
-                dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                count = dis.read(readBuffer);
-                if (count != -1) {
-                    receiveData();
-                } else {
-                    System.out.println("未接收到数据");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void receiveData() {
-        System.out.println("接收到数据" + Arrays.toString(readBuffer));
+    private void startTranslation(TextView view, Socket socket) {
+        Drawable background = view.getBackground();
+        ColorDrawable colorDrawable = (ColorDrawable) background;
+        int colorA = colorDrawable.getColor();
+        int colorB;
+        if (socket == null)
+            colorB = Color.GRAY;
+        else
+            colorB = Color.GREEN;
+        ObjectAnimator objectAnimator = ObjectAnimator.ofInt(view, "backgroundColor", colorA, colorB);
+        objectAnimator.setDuration(1000);
+        objectAnimator.setEvaluator(new ArgbEvaluator());
+        objectAnimator.start();
     }
 }
