@@ -2,6 +2,7 @@ package com.example.xinhe002614.modbustest;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.xinhe002614.modbustest.Unit.SocketUnit;
 
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int real_time = 0;
     private Random random;
     private Line line;
+    private Intent intent;
     private LineChartData data;
     private Viewport port;
     private static int record_num = 200;
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         modbus = SQLiteDatabase.openOrCreateDatabase(getFilesDir().toString() + "/modbus.db3", null);
         try {
             modbus.execSQL("create table ip_table(" + "_id integer primary key autoincrement,"
-                    + "ip_address varchar(20)," + "port varchar(20))");
+                    + "ip_address varchar(20)," + "port int(10))");
             initDatabase();
         } catch (SQLiteException se) {
             Log.w("Exception", se.toString());
@@ -137,10 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startTranslation(track_10, socket_10);
                         break;
                     case SAVE:
-                        cancel_timer();
-                        //TODO:关闭socket和端口
-                        getIpAndPort();
-                        createTask();
+                        // TODO: 关闭正在连接的socket和已连接的socket并释放端口
                         break;
                     default:
                         break;
@@ -162,6 +162,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BUCK_voltage.setText(socketUnit.SBUCK_voltage);
         BUCK_elect.setText(socketUnit.SBUCK_elect);
         temp.setText(socketUnit.Stemp);
+    }
+
+    private void closeSocket() {
+        try {
+            if (socket_1 != null)
+                socket_1.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_2 != null)
+                socket_2.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_3 != null)
+                socket_3.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_4 != null)
+                socket_4.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_5 != null)
+                socket_5.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_6 != null)
+                socket_6.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_7 != null)
+                socket_7.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_8 != null)
+                socket_8.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_9 != null)
+                socket_9.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_10 != null)
+                socket_10.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_11 != null)
+                socket_11.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void changeSpeed() {
@@ -319,131 +388,171 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         connect_timertask_1 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK1;
                 if (socket_1 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK1;
                     handler.sendMessage(msg);
                     socket_1 = socketUnit.connect(port_1);
+                    msg = Message.obtain();
+                    msg.what = TRACK1;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_1, 0);
+                }
             }
         };
         connect_timertask_2 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK2;
                 if (socket_2 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK2;
                     handler.sendMessage(msg);
                     socket_2 = socketUnit.connect(port_2);
+                    msg = Message.obtain();
+                    msg.what = TRACK2;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_2, 0);
+                }
             }
         };
         connect_timertask_3 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK3;
                 if (socket_3 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK3;
                     handler.sendMessage(msg);
                     socket_3 = socketUnit.connect(port_3);
+                    msg = Message.obtain();
+                    msg.what = TRACK3;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_3, 0);
+                }
             }
         };
         connect_timertask_4 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK4;
                 if (socket_4 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK4;
                     handler.sendMessage(msg);
                     socket_4 = socketUnit.connect(port_4);
+                    msg = Message.obtain();
+                    msg.what = TRACK4;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_4, 0);
+                }
             }
         };
         connect_timertask_5 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK5;
                 if (socket_5 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK5;
                     handler.sendMessage(msg);
                     socket_5 = socketUnit.connect(port_5);
+                    msg = Message.obtain();
+                    msg.what = TRACK5;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_5, 0);
+                }
             }
         };
         connect_timertask_6 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK6;
                 if (socket_6 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK6;
                     handler.sendMessage(msg);
                     socket_6 = socketUnit.connect(port_6);
+                    msg = Message.obtain();
+                    msg.what = TRACK6;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_6, 0);
+                }
             }
         };
         connect_timertask_7 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK7;
                 if (socket_7 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK7;
                     handler.sendMessage(msg);
                     socket_7 = socketUnit.connect(port_7);
+                    msg = Message.obtain();
+                    msg.what = TRACK7;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_7, 0);
+                }
             }
         };
         connect_timertask_8 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK8;
                 if (socket_8 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK8;
                     handler.sendMessage(msg);
                     socket_8 = socketUnit.connect(port_8);
+                    msg = Message.obtain();
+                    msg.what = TRACK8;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_8, 0);
+                }
             }
         };
         connect_timertask_9 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK9;
                 if (socket_9 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK9;
                     handler.sendMessage(msg);
                     socket_9 = socketUnit.connect(port_9);
+                    msg = Message.obtain();
+                    msg.what = TRACK9;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_9, 0);
+                }
             }
         };
         connect_timertask_10 = new TimerTask() {
             @Override
             public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK10;
                 if (socket_10 == null) {
-                    Message msg = Message.obtain();
-                    msg.what = TRACK10;
                     handler.sendMessage(msg);
                     socket_10 = socketUnit.connect(port_10);
+                    msg = Message.obtain();
+                    msg.what = TRACK10;
                     handler.sendMessage(msg);
-                } else
+                } else {
+                    handler.sendMessage(msg);
                     socketUnit.sendData(socket_10, 0);
+                }
             }
         };
         connect_timertask_11 = new TimerTask() {
@@ -486,6 +595,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onDestroy() {
+        Log.d("show now", "onDestroy");
         super.onDestroy();
         timer.cancel();
         cancel_timer();
@@ -508,17 +618,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void initDatabase() {
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
-        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new String[]{"0.0.0.0", "0"});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3325});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3326});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3327});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3328});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3329});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3330});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3331});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3332});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3333});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3334});
+        modbus.execSQL("insert into ip_table(ip_address,port) values(?,?)", new Object[]{"0.0.0.0", 3335});
     }
 
     public void getIpAndPort() {
@@ -577,10 +687,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int colorB;
         if (socket == null)
             colorB = Color.GRAY;
-        else
+        else if (socket.getPort() == socketUnit.mport) {
+            colorB = Color.parseColor("#48a6e6");
+        } else
             colorB = Color.GREEN;
         ObjectAnimator objectAnimator = ObjectAnimator.ofInt(view, "backgroundColor", colorA, colorB);
-        objectAnimator.setDuration(1000);
+        objectAnimator.setDuration(500);
         objectAnimator.setEvaluator(new ArgbEvaluator());
         objectAnimator.start();
     }

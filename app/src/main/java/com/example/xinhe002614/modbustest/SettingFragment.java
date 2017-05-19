@@ -2,6 +2,7 @@ package com.example.xinhe002614.modbustest;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import static com.example.xinhe002614.modbustest.MainActivity.SAVE;
+import static com.example.xinhe002614.modbustest.MainActivity.handler;
 
 /**
  * Created by Whisper on 2017/4/25.
@@ -136,6 +140,9 @@ public class SettingFragment extends Fragment {
             switch (v.getId()) {
                 case R.id.save:
                     saveData();
+                    Message msg = Message.obtain();
+                    msg.what = SAVE;
+                    handler.sendMessage(msg);
                     break;
             }
         }

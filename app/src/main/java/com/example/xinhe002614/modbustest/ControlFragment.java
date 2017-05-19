@@ -26,8 +26,8 @@ public class ControlFragment extends Fragment {
     private View mRoot;
     private Context context;
     private SocketUnit socketUnit;
+    private WheelView speed_select;
     private Button forward_btn, backward_btn, stop_btn, coil_up, coil_down, cruise_control;
-    private SQLiteDatabase modbus;
     private static final byte[] MOVE_FORWARD = {0x3A, 0x05, 0x06, 0x00, 0x30, 0x7F, 0x00};//前进
     private static final byte[] MOVE_BACKWARD = {0x3A, 0x05, 0x06, 0x00, 0x30, 0x00, 0x00};//后退
     private static final byte[] STOP = {0x3A, 0x05, 0x06, 0x00, 0x31, 0x7F, 0x00};//刹车
@@ -35,8 +35,7 @@ public class ControlFragment extends Fragment {
     private static final byte[] COIL_DOWN = {0x3A, 0x05, 0x06, 0x00, 0x33, 0x00, 0x00};//线圈降
     private static final byte[] OPEN_CRUISE_CONTROL = {0x3A, 0x05, 0x06, 0x00, 0x34, 0x7F, 0x00};//定速巡航开
     private static final byte[] SHUT_CRUISE_CONTROL = {0x3A, 0x05, 0x06, 0x00, 0x34, 0x00, 0x00};//定速巡航关
-    private static final byte[] SPEED = {0x3A, 0x0E, 0x10, 0x00, 0x35, 0x00, 0x04, 0x08,
-            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};//发速度
+    private static final byte[] SPEED = {0x3A, 0x0E, 0x10, 0x00, 0x35, 0x00, 0x04, 0x08};//发速度
     private int cruise = 0;
 
     public static ControlFragment newInstance(int index) {
@@ -61,7 +60,6 @@ public class ControlFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         this.context = getActivity();
-        modbus = SQLiteDatabase.openOrCreateDatabase(getActivity().getFilesDir().toString() + "/modbus.db3", null);
         initView();
     }
 
@@ -88,9 +86,11 @@ public class ControlFragment extends Fragment {
             switch (v.getId()) {
                 case R.id.forward_btn:
                     socketUnit.sendControl(socket_11, MOVE_FORWARD);
+                    socketUnit.sendControl(socket_11, byteMerger(SPEED, doubleToBytes(speed_select.getSelection())));
                     break;
                 case R.id.backward_btn:
                     socketUnit.sendControl(socket_11, MOVE_BACKWARD);
+                    socketUnit.sendControl(socket_11, byteMerger(SPEED, doubleToBytes(speed_select.getSelection())));
                     break;
                 case R.id.stop_btn:
                     socketUnit.sendControl(socket_11, STOP);
@@ -118,6 +118,30 @@ public class ControlFragment extends Fragment {
         }
     };
 
+    public static byte[] doubleToBytes(double d) {
+        return longToBytes(Double.doubleToLongBits(d));
+    }
+
+    public static byte[] longToBytes(long l) {
+        byte[] b = new byte[8];
+        b[7] = (byte) (l >>> 56);
+        b[6] = (byte) (l >>> 48);
+        b[5] = (byte) (l >>> 40);
+        b[4] = (byte) (l >>> 32);
+        b[3] = (byte) (l >>> 24);
+        b[2] = (byte) (l >>> 16);
+        b[1] = (byte) (l >>> 8);
+        b[0] = (byte) (l);
+        return b;
+    }
+
+    public static byte[] byteMerger(byte[] byte_1, byte[] byte_2) {
+        byte[] byte_3 = new byte[byte_1.length + byte_2.length];
+        System.arraycopy(byte_1, 0, byte_3, 0, byte_1.length);
+        System.arraycopy(byte_2, 0, byte_3, byte_1.length, byte_2.length);
+        return byte_3;
+    }
+
     private void initWheel() {
         WheelView.WheelViewStyle style = new WheelView.WheelViewStyle();
         style.selectedTextColor = Color.parseColor("#6CD0E8");
@@ -125,7 +149,7 @@ public class ControlFragment extends Fragment {
         style.textSize = 12;
         style.backgroundColor = Color.parseColor("#666666");
         style.selectedTextSize = 26;
-        WheelView speed_select = (WheelView) getActivity().findViewById(R.id.speed_select);
+        speed_select = (WheelView) getActivity().findViewById(R.id.speed_select);
         speed_select.setWheelAdapter(new ArrayWheelAdapter(context));
         speed_select.setSkin(WheelView.Skin.Holo);
         speed_select.setLoop(false);

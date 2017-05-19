@@ -30,6 +30,7 @@ public class SocketUnit {
     public String Sinput_rate, Scoil_elect_1, Sinput_elect, Sinput_voltage;
     public String Soutput_rate, Scoil_elect_2, SBUCK_voltage, SBUCK_elect, Stemp;
     public Float Sspeed;
+    public int mport = 0;
 
     public SocketUnit(Context context) {
         this.context = context;
@@ -61,7 +62,8 @@ public class SocketUnit {
                 dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 count = dis.read(readBuffer);
                 if (count != -1) {
-                    receiveData(readBuffer, tag);
+                    mport = socket.getPort();
+                    receiveData(readBuffer, tag, mport);
                 } else {
                     //System.out.println("未接收到数据");
                 }
@@ -87,7 +89,7 @@ public class SocketUnit {
         }
     }
 
-    private void receiveData(byte[] bytes, int tag) {
+    private void receiveData(byte[] bytes, int tag, int port) {
         if (tag == 0) {
             if (bytes[0] == 4) {
                 byte Pin[] = {bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7], bytes[8], bytes[9]};
@@ -98,6 +100,7 @@ public class SocketUnit {
                 Scoil_elect_1 = String.valueOf(getDouble(I1));
                 Sinput_elect = String.valueOf(getDouble(Iin));
                 Sinput_voltage = String.valueOf(getDouble(Vin));
+                mport = port;
 
                 Message msg = Message.obtain();
                 msg.what = READ_COIL_1;
