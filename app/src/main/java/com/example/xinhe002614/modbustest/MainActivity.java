@@ -2,7 +2,6 @@ package com.example.xinhe002614.modbustest;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import com.example.xinhe002614.modbustest.Unit.SocketUnit;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +48,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PagerAdapter pagerAdapter;
     private TextView input_rate, input_elect, coil_elect_1, input_voltage, output_rate, coil_elect_2, BUCK_voltage, BUCK_elect, temp;
     private TextView track_1, track_2, track_3, track_4, track_5, track_6, track_7, track_8, track_9, track_10;
-    private Socket socket_1 = null, socket_2 = null, socket_3 = null, socket_4 = null, socket_5 = null, socket_6 = null, socket_7 = null, socket_8 = null, socket_9 = null, socket_10 = null;
+    private Socket socket_1 = null, socket_2 = null, socket_3 = null, socket_4 = null, socket_5 = null,
+            socket_6 = null, socket_7 = null, socket_8 = null, socket_9 = null, socket_10 = null;
     public static Socket socket_11 = null;
     private String ip_1, ip_2, ip_3, ip_4, ip_5, ip_6, ip_7, ip_8, ip_9, ip_10, ip_11;
     private int port_1, port_2, port_3, port_4, port_5, port_6, port_7, port_8, port_9, port_10, port_11;
-    private TimerTask connect_timertask_1, connect_timertask_2, connect_timertask_3, connect_timertask_4, connect_timertask_5, connect_timertask_6, connect_timertask_7, connect_timertask_8, connect_timertask_9, connect_timertask_10, connect_timertask_11;
-    private Timer connect_timer_1, connect_timer_2, connect_timer_3, connect_timer_4, connect_timer_5, connect_timer_6, connect_timer_7, connect_timer_8, connect_timer_9, connect_timer_10, connect_timer_11;
+    private TimerTask connect_timertask_1, connect_timertask_2, connect_timertask_3,
+            connect_timertask_4, connect_timertask_5, connect_timertask_6, connect_timertask_7,
+            connect_timertask_8, connect_timertask_9, connect_timertask_10, connect_timertask_11;
+    private Timer connect_timer_1, connect_timer_2, connect_timer_3, connect_timer_4, connect_timer_5,
+            connect_timer_6, connect_timer_7, connect_timer_8, connect_timer_9, connect_timer_10, connect_timer_11;
+    private ServerSocket serSoc_1, serSoc_2, serSoc_3, serSoc_4, serSoc_5, serSoc_6, serSoc_7, serSoc_8, serSoc_9, serSoc_10, serSoc_11;
     private Timer timer;
     private ViewPager viewPager;
     private CheckBox power_switch;
@@ -67,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int real_time = 0;
     private Random random;
     private Line line;
-    private Intent intent;
     private LineChartData data;
     private Viewport port;
     private static int record_num = 200;
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initview();
         initHandler();
         getIpAndPort();
+        initSerSoc();
         createTask();
         //showChangeLineChart();
     }
@@ -140,7 +145,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         startTranslation(track_10, socket_10);
                         break;
                     case SAVE:
-                        // TODO: 关闭正在连接的socket和已连接的socket并释放端口
+                        closeSocket();
+                        getIpAndPort();
+                        initSerSoc();
+                        createTask();
                         break;
                     default:
                         break;
@@ -162,75 +170,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         BUCK_voltage.setText(socketUnit.SBUCK_voltage);
         BUCK_elect.setText(socketUnit.SBUCK_elect);
         temp.setText(socketUnit.Stemp);
-    }
-
-    private void closeSocket() {
-        try {
-            if (socket_1 != null)
-                socket_1.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_2 != null)
-                socket_2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_3 != null)
-                socket_3.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_4 != null)
-                socket_4.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_5 != null)
-                socket_5.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_6 != null)
-                socket_6.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_7 != null)
-                socket_7.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_8 != null)
-                socket_8.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_9 != null)
-                socket_9.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_10 != null)
-                socket_10.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            if (socket_11 != null)
-                socket_11.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void changeSpeed() {
@@ -356,228 +295,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void cancel_timer() {
-        connect_timer_1.cancel();
-        connect_timer_2.cancel();
-        connect_timer_3.cancel();
-        connect_timer_4.cancel();
-        connect_timer_5.cancel();
-        connect_timer_6.cancel();
-        connect_timer_7.cancel();
-        connect_timer_8.cancel();
-        connect_timer_9.cancel();
-        connect_timer_10.cancel();
-        connect_timer_11.cancel();
-    }
-
-    private void new_timer() {
-        connect_timer_1 = new Timer();
-        connect_timer_2 = new Timer();
-        connect_timer_3 = new Timer();
-        connect_timer_4 = new Timer();
-        connect_timer_5 = new Timer();
-        connect_timer_6 = new Timer();
-        connect_timer_7 = new Timer();
-        connect_timer_8 = new Timer();
-        connect_timer_9 = new Timer();
-        connect_timer_10 = new Timer();
-        connect_timer_11 = new Timer();
-    }
-
-    private void createTask() {
-        connect_timertask_1 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK1;
-                if (socket_1 == null) {
-                    handler.sendMessage(msg);
-                    socket_1 = socketUnit.connect(port_1);
-                    msg = Message.obtain();
-                    msg.what = TRACK1;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_1, 0);
-                }
-            }
-        };
-        connect_timertask_2 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK2;
-                if (socket_2 == null) {
-                    handler.sendMessage(msg);
-                    socket_2 = socketUnit.connect(port_2);
-                    msg = Message.obtain();
-                    msg.what = TRACK2;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_2, 0);
-                }
-            }
-        };
-        connect_timertask_3 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK3;
-                if (socket_3 == null) {
-                    handler.sendMessage(msg);
-                    socket_3 = socketUnit.connect(port_3);
-                    msg = Message.obtain();
-                    msg.what = TRACK3;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_3, 0);
-                }
-            }
-        };
-        connect_timertask_4 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK4;
-                if (socket_4 == null) {
-                    handler.sendMessage(msg);
-                    socket_4 = socketUnit.connect(port_4);
-                    msg = Message.obtain();
-                    msg.what = TRACK4;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_4, 0);
-                }
-            }
-        };
-        connect_timertask_5 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK5;
-                if (socket_5 == null) {
-                    handler.sendMessage(msg);
-                    socket_5 = socketUnit.connect(port_5);
-                    msg = Message.obtain();
-                    msg.what = TRACK5;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_5, 0);
-                }
-            }
-        };
-        connect_timertask_6 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK6;
-                if (socket_6 == null) {
-                    handler.sendMessage(msg);
-                    socket_6 = socketUnit.connect(port_6);
-                    msg = Message.obtain();
-                    msg.what = TRACK6;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_6, 0);
-                }
-            }
-        };
-        connect_timertask_7 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK7;
-                if (socket_7 == null) {
-                    handler.sendMessage(msg);
-                    socket_7 = socketUnit.connect(port_7);
-                    msg = Message.obtain();
-                    msg.what = TRACK7;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_7, 0);
-                }
-            }
-        };
-        connect_timertask_8 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK8;
-                if (socket_8 == null) {
-                    handler.sendMessage(msg);
-                    socket_8 = socketUnit.connect(port_8);
-                    msg = Message.obtain();
-                    msg.what = TRACK8;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_8, 0);
-                }
-            }
-        };
-        connect_timertask_9 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK9;
-                if (socket_9 == null) {
-                    handler.sendMessage(msg);
-                    socket_9 = socketUnit.connect(port_9);
-                    msg = Message.obtain();
-                    msg.what = TRACK9;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_9, 0);
-                }
-            }
-        };
-        connect_timertask_10 = new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = Message.obtain();
-                msg.what = TRACK10;
-                if (socket_10 == null) {
-                    handler.sendMessage(msg);
-                    socket_10 = socketUnit.connect(port_10);
-                    msg = Message.obtain();
-                    msg.what = TRACK10;
-                    handler.sendMessage(msg);
-                } else {
-                    handler.sendMessage(msg);
-                    socketUnit.sendData(socket_10, 0);
-                }
-            }
-        };
-        connect_timertask_11 = new TimerTask() {
-            @Override
-            public void run() {
-                if (socket_11 == null)
-                    socket_11 = socketUnit.connect(port_11);
-                else
-                    socketUnit.sendData(socket_11, 1);
-            }
-        };
-        new_timer();
-        connect_timer_1.schedule(connect_timertask_1, 50, 500);
-        connect_timer_2.schedule(connect_timertask_2, 50, 500);
-        connect_timer_3.schedule(connect_timertask_3, 50, 500);
-        connect_timer_4.schedule(connect_timertask_4, 50, 500);
-        connect_timer_5.schedule(connect_timertask_5, 50, 500);
-        connect_timer_6.schedule(connect_timertask_6, 50, 500);
-        connect_timer_7.schedule(connect_timertask_7, 50, 500);
-        connect_timer_8.schedule(connect_timertask_8, 50, 500);
-        connect_timer_9.schedule(connect_timertask_9, 50, 500);
-        connect_timer_10.schedule(connect_timertask_10, 50, 500);
-        connect_timer_11.schedule(connect_timertask_11, 50, 500);
-    }
-
     private LineChartData initDatas(List<Line> lines) {
         data.setLines(lines);
         data.setAxisYLeft(axisY);
@@ -678,6 +395,377 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             port_11 = cur.getInt(2);
         }
         cur.close();
+    }
+
+    private void initSerSoc() {
+        try {
+            serSoc_1 = new ServerSocket(port_1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_2 = new ServerSocket(port_2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_3 = new ServerSocket(port_3);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_4 = new ServerSocket(port_4);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_5 = new ServerSocket(port_5);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_6 = new ServerSocket(port_6);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_7 = new ServerSocket(port_7);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_8 = new ServerSocket(port_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_9 = new ServerSocket(port_9);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_10 = new ServerSocket(port_10);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            serSoc_11 = new ServerSocket(port_11);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cancel_timer() {
+        connect_timer_1.cancel();
+        connect_timer_2.cancel();
+        connect_timer_3.cancel();
+        connect_timer_4.cancel();
+        connect_timer_5.cancel();
+        connect_timer_6.cancel();
+        connect_timer_7.cancel();
+        connect_timer_8.cancel();
+        connect_timer_9.cancel();
+        connect_timer_10.cancel();
+        connect_timer_11.cancel();
+    }
+
+    private void new_timer() {
+        connect_timer_1 = new Timer();
+        connect_timer_2 = new Timer();
+        connect_timer_3 = new Timer();
+        connect_timer_4 = new Timer();
+        connect_timer_5 = new Timer();
+        connect_timer_6 = new Timer();
+        connect_timer_7 = new Timer();
+        connect_timer_8 = new Timer();
+        connect_timer_9 = new Timer();
+        connect_timer_10 = new Timer();
+        connect_timer_11 = new Timer();
+    }
+
+    private void createTask() {
+        connect_timertask_1 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK1;
+                if (socket_1 == null) {
+                    handler.sendMessage(msg);
+                    socket_1 = socketUnit.connect(serSoc_1);
+                    msg = Message.obtain();
+                    msg.what = TRACK1;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_1 = socketUnit.sendData(socket_1, 0);
+                }
+            }
+        };
+        connect_timertask_2 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK2;
+                if (socket_2 == null) {
+                    handler.sendMessage(msg);
+                    socket_2 = socketUnit.connect(serSoc_2);
+                    msg = Message.obtain();
+                    msg.what = TRACK2;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_2 = socketUnit.sendData(socket_2, 0);
+                }
+            }
+        };
+        connect_timertask_3 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK3;
+                if (socket_3 == null) {
+                    handler.sendMessage(msg);
+                    socket_3 = socketUnit.connect(serSoc_3);
+                    msg = Message.obtain();
+                    msg.what = TRACK3;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_3 = socketUnit.sendData(socket_3, 0);
+                }
+            }
+        };
+        connect_timertask_4 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK4;
+                if (socket_4 == null) {
+                    handler.sendMessage(msg);
+                    socket_4 = socketUnit.connect(serSoc_4);
+                    msg = Message.obtain();
+                    msg.what = TRACK4;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_4 = socketUnit.sendData(socket_4, 0);
+                }
+            }
+        };
+        connect_timertask_5 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK5;
+                if (socket_5 == null) {
+                    handler.sendMessage(msg);
+                    socket_5 = socketUnit.connect(serSoc_5);
+                    msg = Message.obtain();
+                    msg.what = TRACK5;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_5 = socketUnit.sendData(socket_5, 0);
+                }
+            }
+        };
+        connect_timertask_6 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK6;
+                if (socket_6 == null) {
+                    handler.sendMessage(msg);
+                    socket_6 = socketUnit.connect(serSoc_6);
+                    msg = Message.obtain();
+                    msg.what = TRACK6;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_6 = socketUnit.sendData(socket_6, 0);
+                }
+            }
+        };
+        connect_timertask_7 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK7;
+                if (socket_7 == null) {
+                    handler.sendMessage(msg);
+                    socket_7 = socketUnit.connect(serSoc_7);
+                    msg = Message.obtain();
+                    msg.what = TRACK7;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_7 = socketUnit.sendData(socket_7, 0);
+                }
+            }
+        };
+        connect_timertask_8 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK8;
+                if (socket_8 == null) {
+                    handler.sendMessage(msg);
+                    socket_8 = socketUnit.connect(serSoc_8);
+                    msg = Message.obtain();
+                    msg.what = TRACK8;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_8 = socketUnit.sendData(socket_8, 0);
+                }
+            }
+        };
+        connect_timertask_9 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK9;
+                if (socket_9 == null) {
+                    handler.sendMessage(msg);
+                    socket_9 = socketUnit.connect(serSoc_9);
+                    msg = Message.obtain();
+                    msg.what = TRACK9;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_9 = socketUnit.sendData(socket_9, 0);
+                }
+            }
+        };
+        connect_timertask_10 = new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = Message.obtain();
+                msg.what = TRACK10;
+                if (socket_10 == null) {
+                    handler.sendMessage(msg);
+                    socket_10 = socketUnit.connect(serSoc_10);
+                    msg = Message.obtain();
+                    msg.what = TRACK10;
+                    handler.sendMessage(msg);
+                } else {
+                    handler.sendMessage(msg);
+                    socket_10 = socketUnit.sendData(socket_10, 0);
+                }
+            }
+        };
+        connect_timertask_11 = new TimerTask() {
+            @Override
+            public void run() {
+                if (socket_11 == null)
+                    socket_11 = socketUnit.connect(serSoc_11);
+                else
+                    socket_11 = socketUnit.sendData(socket_11, 1);
+            }
+        };
+        new_timer();
+        connect_timer_1.schedule(connect_timertask_1, 50, 500);
+        connect_timer_2.schedule(connect_timertask_2, 50, 500);
+        connect_timer_3.schedule(connect_timertask_3, 50, 500);
+        connect_timer_4.schedule(connect_timertask_4, 50, 500);
+        connect_timer_5.schedule(connect_timertask_5, 50, 500);
+        connect_timer_6.schedule(connect_timertask_6, 50, 500);
+        connect_timer_7.schedule(connect_timertask_7, 50, 500);
+        connect_timer_8.schedule(connect_timertask_8, 50, 500);
+        connect_timer_9.schedule(connect_timertask_9, 50, 500);
+        connect_timer_10.schedule(connect_timertask_10, 50, 500);
+        connect_timer_11.schedule(connect_timertask_11, 50, 500);
+    }
+
+    private void closeSocket() {
+        try {
+            if (socket_1 != null)
+                socket_1.close();
+            serSoc_1.close();
+            socket_1 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_2 != null)
+                socket_2.close();
+            serSoc_2.close();
+            socket_2 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_3 != null)
+                socket_3.close();
+            serSoc_3.close();
+            socket_3 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_4 != null)
+                socket_4.close();
+            serSoc_4.close();
+            socket_4 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_5 != null)
+                socket_5.close();
+            serSoc_5.close();
+            socket_5 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_6 != null)
+                socket_6.close();
+            serSoc_6.close();
+            socket_6 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_7 != null)
+                socket_7.close();
+            serSoc_7.close();
+            socket_7 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_8 != null)
+                socket_8.close();
+            serSoc_8.close();
+            socket_8 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_9 != null)
+                socket_9.close();
+            serSoc_9.close();
+            socket_9 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_10 != null)
+                socket_10.close();
+            serSoc_10.close();
+            socket_10 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (socket_11 != null)
+                socket_11.close();
+            serSoc_11.close();
+            socket_11 = null;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startTranslation(TextView view, Socket socket) {

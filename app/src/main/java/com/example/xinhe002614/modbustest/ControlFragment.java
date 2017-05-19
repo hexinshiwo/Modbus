@@ -1,6 +1,5 @@
 package com.example.xinhe002614.modbustest;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.Color;

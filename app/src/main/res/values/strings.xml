@@ -21,7 +21,7 @@
     <string name="BUCK_elect">BUCK输出电流：</string>
     <string name="temp">线圈温度：</string>
     <string name="value">对应值</string>
-    <string name="save">保存设置</string>
+    <string name="save">保存并重启</string>
 
     <string name="ip_address_1">原边IP地址1</string>
     <string name="ip_address_2">原边IP地址2</string>

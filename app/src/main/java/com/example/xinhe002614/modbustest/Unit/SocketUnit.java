@@ -36,13 +36,12 @@ public class SocketUnit {
         this.context = context;
     }
 
-    public Socket connect(int port) {
+    public Socket connect(ServerSocket serSoc) {
         Socket socket = null;
         try {
-            ServerSocket e = new ServerSocket(port);
 
             System.out.println("Waiting");
-            socket = e.accept();
+            socket = serSoc.accept();
             System.out.println("Connecting success");
 
         } catch (IOException var4) {
@@ -51,7 +50,7 @@ public class SocketUnit {
         return socket;
     }
 
-    public void sendData(Socket socket, int tag) {
+    public Socket sendData(Socket socket, int tag) {
         if (socket != null) {
             int count = 0;
             try {
@@ -64,24 +63,20 @@ public class SocketUnit {
                 if (count != -1) {
                     mport = socket.getPort();
                     receiveData(readBuffer, tag, mport);
-                } else {
-                    //System.out.println("未接收到数据");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
+        return socket;
     }
 
     public void sendControl(Socket socket, byte[] bytes) {
         if (socket != null) {
             try {
                 dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
-                if (bytes.length == 8) dos.write(bytes);
-                else {
-                    //发送速度
-
-                }
+                dos.write(bytes);
                 dos.flush();
             } catch (IOException e) {
                 e.printStackTrace();
