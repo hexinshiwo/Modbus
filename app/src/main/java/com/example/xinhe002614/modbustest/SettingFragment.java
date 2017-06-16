@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import static com.example.xinhe002614.modbustest.MainActivity.SAVE;
+import static com.example.xinhe002614.modbustest.MainActivity.MSG_SAVE;
 import static com.example.xinhe002614.modbustest.MainActivity.handler;
 
 /**
@@ -141,7 +141,7 @@ public class SettingFragment extends Fragment {
                 case R.id.save:
                     saveData();
                     Message msg = Message.obtain();
-                    msg.what = SAVE;
+                    msg.what = MSG_SAVE;
                     handler.sendMessage(msg);
                     break;
             }

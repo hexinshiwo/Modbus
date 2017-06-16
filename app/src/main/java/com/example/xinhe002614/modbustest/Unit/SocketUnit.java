@@ -12,8 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DecimalFormat;
 
-import static com.example.xinhe002614.modbustest.MainActivity.READ_COIL_1;
-import static com.example.xinhe002614.modbustest.MainActivity.READ_COIL_2;
+import static com.example.xinhe002614.modbustest.MainActivity.MSG_READ_COIL_1;
+import static com.example.xinhe002614.modbustest.MainActivity.MSG_READ_COIL_2;
 import static com.example.xinhe002614.modbustest.MainActivity.handler;
 
 /**
@@ -98,7 +98,7 @@ public class SocketUnit {
                 mport = port;
 
                 Message msg = Message.obtain();
-                msg.what = READ_COIL_1;
+                msg.what = MSG_READ_COIL_1;
                 handler.sendMessage(msg);//用handler在UI线程执行
             }
         } else {
@@ -119,7 +119,7 @@ public class SocketUnit {
                 Stemp = String.valueOf(getDouble(Tcoil));
 
                 Message msg = Message.obtain();
-                msg.what = READ_COIL_2;
+                msg.what = MSG_READ_COIL_2;
                 handler.sendMessage(msg);//用handler在UI线程执行
             }
         }

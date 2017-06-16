@@ -9,9 +9,11 @@
     <string name="cruise_control_open">定速巡航:开</string>
     <string name="coil_down">线圈下降</string>
     <string name="km_h">km/h</string>
+    <string name="car_speed">小车速度：</string>
     <string name="mail_text">行驶里程：</string>
     <string name="input_rate">系统输入功率：</string>
     <string name="output_rate">系统输出功率：</string>
+    <string name="efficiency">效率：</string>
     <string name="sys_efficient">系统效率：</string>
     <string name="coil_elect_1">原边线圈电流：</string>
     <string name="coil_elect_2">副边线圈电流：</string>
@@ -22,6 +24,7 @@
     <string name="temp">线圈温度：</string>
     <string name="value">对应值</string>
     <string name="save">保存并重启</string>
+    <string name="confirm_speed">确认速度</string>
 
     <string name="ip_address_1">原边IP地址1</string>
     <string name="ip_address_2">原边IP地址2</string>

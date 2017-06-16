@@ -41,8 +41,8 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final byte[] OPEN_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x7F, 0x00};//开电源
-    private static final byte[] SHUT_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x00, 0x00};//关电源
+    private final static byte[] OPEN_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x7F, 0x00};//开电源
+    private final static byte[] SHUT_POWER = {0x3A, 0x05, 0x06, 0x00, 0x32, 0x00, 0x00};//关电源
     private SocketUnit socketUnit;
     private SQLiteDatabase modbus;
     private PagerAdapter pagerAdapter;
@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Line line;
     private LineChartData data;
     private Viewport port;
-    private static int record_num = 200;
+    private final static int record_num = 200;
     public static Handler handler;
-    public final static int READ_COIL_1 = 11;
-    public final static int READ_COIL_2 = 12;
-    public final static int TRACK1 = 1, TRACK2 = 2, TRACK3 = 3, TRACK4 = 4, TRACK5 = 5,
-            TRACK6 = 6, TRACK7 = 7, TRACK8 = 8, TRACK9 = 9, TRACK10 = 10, SAVE = 13;
+    public final static int MSG_READ_COIL_1 = 11;
+    public final static int MSG_READ_COIL_2 = 12;
+    public final static int MSG_TRACK1 = 1, MSG_TRACK2 = 2, MSG_TRACK3 = 3, MSG_TRACK4 = 4, MSG_TRACK5 = 5,
+            MSG_TRACK6 = 6, MSG_TRACK7 = 7, MSG_TRACK8 = 8, MSG_TRACK9 = 9, MSG_TRACK10 = 10, MSG_SAVE = 13;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,48 +103,81 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //showChangeLineChart();
     }
 
+    public void initview() {
+        socketUnit = new SocketUnit(MainActivity.this);
+        new_timer();
+        timer = new Timer();
+        BindView();
+        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
+        viewPager.setOffscreenPageLimit(2);
+        List<Fragment> list = new ArrayList<Fragment>();
+        list.add(ControlFragment.newInstance(0));
+        list.add(SettingFragment.newInstance(1));
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        pagerAdapter.setContents(list);
+        viewPager.setAdapter(pagerAdapter);
+
+        lineChartView = (LineChartView) findViewById(R.id.linechartview);
+        initData();
+        axisY.setTextColor(Color.parseColor("#ffffff"));
+        axisX.setTextColor(Color.parseColor("#ffffff"));
+        axisY.setHasLines(true);
+        Viewport port = initViewPort(0, record_num);
+        lineChartData = initDatas(null);
+        lineChartView.setLineChartData(lineChartData);
+        lineChartView.setMaximumViewport(port);
+        lineChartView.setCurrentViewport(port);
+        lineChartView.setInteractive(false);
+        lineChartView.setScrollEnabled(false);
+        lineChartView.setValueTouchEnabled(false);
+        lineChartView.setFocusableInTouchMode(false);
+        lineChartView.setViewportCalculationEnabled(false);
+        lineChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
+        lineChartView.startDataAnimation();
+    }
+
     private void initHandler() {
         handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case READ_COIL_1:
+                    case MSG_READ_COIL_1:
                         readcoil1();
                         break;
-                    case READ_COIL_2:
+                    case MSG_READ_COIL_2:
                         readcoil2();
                         changeSpeed();
                         break;
-                    case TRACK1:
+                    case MSG_TRACK1:
                         startTranslation(track_1, socket_1);
                         break;
-                    case TRACK2:
+                    case MSG_TRACK2:
                         startTranslation(track_2, socket_2);
                         break;
-                    case TRACK3:
+                    case MSG_TRACK3:
                         startTranslation(track_3, socket_3);
                         break;
-                    case TRACK4:
+                    case MSG_TRACK4:
                         startTranslation(track_4, socket_4);
                         break;
-                    case TRACK5:
+                    case MSG_TRACK5:
                         startTranslation(track_5, socket_5);
                         break;
-                    case TRACK6:
+                    case MSG_TRACK6:
                         startTranslation(track_6, socket_6);
                         break;
-                    case TRACK7:
+                    case MSG_TRACK7:
                         startTranslation(track_7, socket_7);
                         break;
-                    case TRACK8:
+                    case MSG_TRACK8:
                         startTranslation(track_8, socket_8);
                         break;
-                    case TRACK9:
+                    case MSG_TRACK9:
                         startTranslation(track_9, socket_9);
                         break;
-                    case TRACK10:
+                    case MSG_TRACK10:
                         startTranslation(track_10, socket_10);
                         break;
-                    case SAVE:
+                    case MSG_SAVE:
                         closeSocket();
                         getIpAndPort();
                         initSerSoc();
@@ -222,39 +255,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         timer.schedule(timerTask, 50, 50);
-    }
-
-    public void initview() {
-        socketUnit = new SocketUnit(MainActivity.this);
-        new_timer();
-        timer = new Timer();
-        BindView();
-        viewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        viewPager.setOffscreenPageLimit(2);
-        List<Fragment> list = new ArrayList<Fragment>();
-        list.add(ControlFragment.newInstance(0));
-        list.add(SettingFragment.newInstance(1));
-        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        pagerAdapter.setContents(list);
-        viewPager.setAdapter(pagerAdapter);
-
-        lineChartView = (LineChartView) findViewById(R.id.linechartview);
-        initData();
-        axisY.setTextColor(Color.parseColor("#ffffff"));
-        axisX.setTextColor(Color.parseColor("#ffffff"));
-        axisY.setHasLines(true);
-        Viewport port = initViewPort(0, record_num);
-        lineChartData = initDatas(null);
-        lineChartView.setLineChartData(lineChartData);
-        lineChartView.setMaximumViewport(port);
-        lineChartView.setCurrentViewport(port);
-        lineChartView.setInteractive(false);
-        lineChartView.setScrollEnabled(false);
-        lineChartView.setValueTouchEnabled(false);
-        lineChartView.setFocusableInTouchMode(false);
-        lineChartView.setViewportCalculationEnabled(false);
-        lineChartView.setContainerScrollEnabled(true, ContainerScrollType.HORIZONTAL);
-        lineChartView.startDataAnimation();
     }
 
     public void BindView() {
@@ -488,12 +488,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK1;
+                msg.what = MSG_TRACK1;
                 if (socket_1 == null) {
                     handler.sendMessage(msg);
                     socket_1 = socketUnit.connect(serSoc_1);
                     msg = Message.obtain();
-                    msg.what = TRACK1;
+                    msg.what = MSG_TRACK1;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -505,12 +505,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK2;
+                msg.what = MSG_TRACK2;
                 if (socket_2 == null) {
                     handler.sendMessage(msg);
                     socket_2 = socketUnit.connect(serSoc_2);
                     msg = Message.obtain();
-                    msg.what = TRACK2;
+                    msg.what = MSG_TRACK2;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -522,12 +522,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK3;
+                msg.what = MSG_TRACK3;
                 if (socket_3 == null) {
                     handler.sendMessage(msg);
                     socket_3 = socketUnit.connect(serSoc_3);
                     msg = Message.obtain();
-                    msg.what = TRACK3;
+                    msg.what = MSG_TRACK3;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -539,12 +539,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK4;
+                msg.what = MSG_TRACK4;
                 if (socket_4 == null) {
                     handler.sendMessage(msg);
                     socket_4 = socketUnit.connect(serSoc_4);
                     msg = Message.obtain();
-                    msg.what = TRACK4;
+                    msg.what = MSG_TRACK4;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -556,12 +556,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK5;
+                msg.what = MSG_TRACK5;
                 if (socket_5 == null) {
                     handler.sendMessage(msg);
                     socket_5 = socketUnit.connect(serSoc_5);
                     msg = Message.obtain();
-                    msg.what = TRACK5;
+                    msg.what = MSG_TRACK5;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -573,12 +573,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK6;
+                msg.what = MSG_TRACK6;
                 if (socket_6 == null) {
                     handler.sendMessage(msg);
                     socket_6 = socketUnit.connect(serSoc_6);
                     msg = Message.obtain();
-                    msg.what = TRACK6;
+                    msg.what = MSG_TRACK6;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -590,12 +590,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK7;
+                msg.what = MSG_TRACK7;
                 if (socket_7 == null) {
                     handler.sendMessage(msg);
                     socket_7 = socketUnit.connect(serSoc_7);
                     msg = Message.obtain();
-                    msg.what = TRACK7;
+                    msg.what = MSG_TRACK7;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -607,12 +607,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK8;
+                msg.what = MSG_TRACK8;
                 if (socket_8 == null) {
                     handler.sendMessage(msg);
                     socket_8 = socketUnit.connect(serSoc_8);
                     msg = Message.obtain();
-                    msg.what = TRACK8;
+                    msg.what = MSG_TRACK8;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -624,12 +624,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK9;
+                msg.what = MSG_TRACK9;
                 if (socket_9 == null) {
                     handler.sendMessage(msg);
                     socket_9 = socketUnit.connect(serSoc_9);
                     msg = Message.obtain();
-                    msg.what = TRACK9;
+                    msg.what = MSG_TRACK9;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
@@ -641,12 +641,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 Message msg = Message.obtain();
-                msg.what = TRACK10;
+                msg.what = MSG_TRACK10;
                 if (socket_10 == null) {
                     handler.sendMessage(msg);
                     socket_10 = socketUnit.connect(serSoc_10);
                     msg = Message.obtain();
-                    msg.what = TRACK10;
+                    msg.what = MSG_TRACK10;
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);

@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Blank">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/layout_stroke"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/coil_elect_1"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/coil_elect_2"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/input_elect"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/input_voltage"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/BUCK_elect"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/BUCK_voltage"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:text="@string/temp"
+                android:textColor="@color/White"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/coil_elect_1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/coil_elect_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/input_elect"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/input_voltage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/BUCK_elect"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/BUCK_voltage"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/temp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/value"
+                android:textColor="@color/Green"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_stroke"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/forward_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="64dp"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:background="@drawable/move_forward_button"
+                android:gravity="center"
+                android:text="@string/coil_up"
+                android:textColor="@color/Blank"
+                android:textSize="36sp" />
+
+            <Button
+                android:id="@+id/backward_btn"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="64dp"
+                android:layout_weight="1"
+                android:alpha="0.8"
+                android:background="@drawable/move_backward_button"
+                android:gravity="center"
+                android:text="@string/coil_down"
+                android:textColor="@color/Blank"
+                android:textSize="36sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_1"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_1"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_2"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_2"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_3"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_3"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_4"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_4"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_5"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_5"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_6"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_6"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_7"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_7"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_8"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_8"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_9"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_9"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_10"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_10"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/ip_address_11"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/ip_address_11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="1234567890."
+                                android:inputType="number"
+                                android:labelFor="@+id/ip_address_11"
+                                android:maxLines="1" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_1"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_1"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_2"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_2"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_3"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_3"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_4"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_4"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_5"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_5"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_6"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_6"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_7"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_7"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_8"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_8"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_8"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_9"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_9"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_9"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_10"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_10"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_10"
+                                android:maxLines="1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/port_11"
+                                android:textSize="18sp" />
+
+                            <EditText
+                                android:id="@+id/port_11"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:labelFor="@+id/port_11"
+                                android:maxLines="1" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/save"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
