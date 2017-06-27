@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    >
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="match_parent">
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="35dp"/>
+    <Button
+       android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/start"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="25dp"/>
+    </RelativeLayout>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:text="西南交通大学xxx实验室智能小车智控系统"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center" />
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+      android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+            android:id="@+id/left_track"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_10"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_shape_left_up" />
+
+            <TextView
+                android:id="@+id/track_9"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_shape_left_down" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+
+
+
+
+            <TextView
+                android:id="@+id/track_8"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+            <TextView
+                android:id="@+id/track_7"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+            <TextView
+                android:id="@+id/track_6"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@color/Gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/right_track"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_shape_right_up" />
+
+            <TextView
+                android:id="@+id/track_5"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/textview_shape_right_down" />
+        </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="25dp"
+            android:alpha="0.5"
+            android:orientation="vertical"
+            >
+            <lecho.lib.hellocharts.view.LineChartView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#000000"
+                android:padding="16dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#FFFFFF"
+                />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#000000"
+                >
+                <TextView
+                    android:layout_width="125dp"
+                    android:layout_height="30dp"
+                    android:drawableLeft="@drawable/speed"
+                    android:layout_weight="1"
+                    android:layout_gravity="left"
+                    android:text="小车速度"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="125dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@drawable/load_length"
+                    android:layout_marginLeft="125dp"
+                    android:text="行驶里程"
+                    android:textColor="#FFFFFF"
+                    android:gravity="center"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            >
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="70dp"
+                android:background="@drawable/go_back"
+              />
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="100dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="70dp"
+                android:background="@drawable/go_head"
+              />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_height="match_parent">
+       <RelativeLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="60dp"
+           android:layout_marginLeft="20dp">
+
+        <com.wx.wheelview.widget.WheelView
+            android:id="@+id/speed_select"
+            android:layout_width="50dp"
+            android:layout_height="125dp"
+            android:background="@drawable/homepage_bottom_build_info_go_bg_normal"
+            />
+           <TextView
+               android:id="@+id/line4"
+               android:layout_width="match_parent"
+               android:layout_height="1dp"
+                android:background="#000000"
+               android:layout_below="@+id/speed_select"/>
+          <LinearLayout
+              android:layout_width="50dp"
+              android:layout_height="30dp"
+              android:background="@drawable/homepage_bottom_build_info_go_bg_normal"
+              android:layout_below="@+id/line4"/>
+           <ImageView
+               android:layout_width="30dp"
+               android:layout_height="30dp"
+               android:layout_marginTop="127dp"
+               android:layout_marginLeft="10dp"
+               android:background="@drawable/select_speed"
+               android:scaleType="fitXY"
+               />
+       </RelativeLayout>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/stop_car"
+            android:layout_marginTop="233dp"
+            android:layout_marginLeft="21dp"
+            android:scaleType="fitXY"
+            android:id="@+id/imageView" />
+    </RelativeLayout>
+</LinearLayout>
