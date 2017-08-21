@@ -497,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_1 = socketUnit.sendData(socket_1, 0);
+                    socket_1 = socketUnit.sendRequest(socket_1, 0);
                 }
             }
         };
@@ -514,7 +514,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_2 = socketUnit.sendData(socket_2, 0);
+                    socket_2 = socketUnit.sendRequest(socket_2, 0);
                 }
             }
         };
@@ -531,7 +531,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_3 = socketUnit.sendData(socket_3, 0);
+                    socket_3 = socketUnit.sendRequest(socket_3, 0);
                 }
             }
         };
@@ -548,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_4 = socketUnit.sendData(socket_4, 0);
+                    socket_4 = socketUnit.sendRequest(socket_4, 0);
                 }
             }
         };
@@ -565,7 +565,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_5 = socketUnit.sendData(socket_5, 0);
+                    socket_5 = socketUnit.sendRequest(socket_5, 0);
                 }
             }
         };
@@ -582,7 +582,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_6 = socketUnit.sendData(socket_6, 0);
+                    socket_6 = socketUnit.sendRequest(socket_6, 0);
                 }
             }
         };
@@ -599,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_7 = socketUnit.sendData(socket_7, 0);
+                    socket_7 = socketUnit.sendRequest(socket_7, 0);
                 }
             }
         };
@@ -616,7 +616,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_8 = socketUnit.sendData(socket_8, 0);
+                    socket_8 = socketUnit.sendRequest(socket_8, 0);
                 }
             }
         };
@@ -633,7 +633,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_9 = socketUnit.sendData(socket_9, 0);
+                    socket_9 = socketUnit.sendRequest(socket_9, 0);
                 }
             }
         };
@@ -650,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.sendMessage(msg);
                 } else {
                     handler.sendMessage(msg);
-                    socket_10 = socketUnit.sendData(socket_10, 0);
+                    socket_10 = socketUnit.sendRequest(socket_10, 0);
                 }
             }
         };
@@ -660,7 +660,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (socket_11 == null)
                     socket_11 = socketUnit.connect(serSoc_11);
                 else
-                    socket_11 = socketUnit.sendData(socket_11, 1);
+                    socket_11 = socketUnit.sendRequest(socket_11, 1);
             }
         };
         new_timer();

@@ -2,10 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
     <!-- solid指定形状的填充色，只有android:color一个属性 -->
+    <solid android:color="@color/Red" />
     <!-- padding设置内容区域离边界的间距 -->
     <!-- corners设置圆角，只适用于rectangle -->
     <!-- stroke设置描边 -->
     <stroke
-        android:width="3dp"
-        android:color="@color/Light_blue" />
+        android:width="6dp"
+        android:color="@color/Translucent_Gray" />
 </shape>

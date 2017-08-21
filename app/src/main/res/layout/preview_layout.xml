@@ -1,6 +1,1342 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:background="@drawable/background5" />
+
+    <LinearLayout
+        android:id="@+id/setting_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/layout_stroke"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/ac_current_1"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/ac_current_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/ac_current_2"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/ac_current_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/dc_voltage_1"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/dc_voltage_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/dc_voltage_2"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/dc_voltage_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="@drawable/layout_stroke"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/BUCK_voltage_in"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/BUCK_voltage_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/BUCK_current_out"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/BUCK_current_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/super_capacitance_voltage_1"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/super_capacitance_voltage_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/motor_current_in"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/motor_current_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/BUCK_voltage_out"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/BUCK_voltage_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/BUCK_power_out"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/BUCK_power_out"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/super_capacitance_voltage_2"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:id="@+id/super_capacitance_voltage_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/value"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/Blank"
+                        android:textSize="22sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/Green"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                android:background="@drawable/layout_stroke">
+
+                <LinearLayout
+                    android:id="@+id/setting_view_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/layout_stroke"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_1"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_2"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_3"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_4"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_5"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_6"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_7"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/track_8"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textColor="@color/Blank"
+                            android:textSize="22sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dc_voltage_in"
+                                android:textColor="@color/Blank"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/dc_current_in"
+                                android:textColor="@color/Blank"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/power_input"
+                                android:textColor="@color/Blank"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/ac_voltage"
+                                android:textColor="@color/Blank"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_1"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_1"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_1"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_1"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_2"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_2"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_2"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_2"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_4"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_4"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_4"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_4"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_5"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_5"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_5"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_5"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_6"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_6"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_6"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_6"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_7"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_7"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_7"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_7"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/dc_voltage_in_8"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/dc_current_in_8"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/power_input_8"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/ac_voltage_8"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="@string/value"
+                                android:textColor="@color/Green"
+                                android:textSize="20sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/layout_stroke"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginStart="30dp"
+                                android:gravity="center"
+                                android:text="@string/max_speed"
+                                android:textColor="@color/Blank"
+                                android:textSize="22sp" />
+
+                            <EditText
+                                android:id="@+id/max_speed"
+                                android:layout_width="100dp"
+                                android:layout_height="match_parent"
+                                android:digits="1234567890"
+                                android:gravity="center"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:textColor="@color/little_deep_blue" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ScrollView
+                    android:id="@+id/setting_view_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_1"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_1"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_2"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_2"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_3"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_3"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_4"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_4"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_5"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_5"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_6"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_6"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_7"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_7"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_8"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_8"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_9"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_9"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_10"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_10"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/port_11"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/port_11"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/port_11"
+                            android:maxLines="1" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+                <ScrollView
+                    android:id="@+id/setting_view_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_1"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_1"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_2"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_2"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_3"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_3"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_4"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_4"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_5"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_5"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_6"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_6"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_7"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_7"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_8"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_8"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_8"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_9"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_9"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_9"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_10"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_10"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_10"
+                            android:maxLines="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ip_address_11"
+                            android:textColor="@color/Blank"
+                            android:textSize="18sp" />
+
+                        <EditText
+                            android:id="@+id/ip_address_11"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="1234567890."
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:labelFor="@+id/ip_address_11"
+                            android:maxLines="1" />
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/layout_stroke"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back_tomain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_push_button"
+                    android:text="@string/back_tomain"
+                    android:textColor="@color/little_deep_blue"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/switch_show"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_push_button"
+                    android:text="@string/switch_show"
+                    android:textColor="@color/little_deep_blue"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_push_button"
+                    android:text="@string/save"
+                    android:textColor="@color/Red"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

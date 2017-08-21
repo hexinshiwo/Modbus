@@ -12,9 +12,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DecimalFormat;
 
-import static com.example.xinhe002614.modbustest.MainActivity.MSG_READ_COIL_1;
-import static com.example.xinhe002614.modbustest.MainActivity.MSG_READ_COIL_2;
-import static com.example.xinhe002614.modbustest.MainActivity.handler;
+import static com.example.xinhe002614.modbustest.Main3Activity.MSG_READ_COIL_1;
+import static com.example.xinhe002614.modbustest.Main3Activity.MSG_READ_COIL_2;
+import static com.example.xinhe002614.modbustest.Main3Activity.handler;
 
 /**
  * Created by xinhe002614 on 2017/5/7.
@@ -50,7 +50,7 @@ public class SocketUnit {
         return socket;
     }
 
-    public Socket sendData(Socket socket, int tag) {
+    public Socket sendRequest(Socket socket, int tag) {
         if (socket != null) {
             int count = 0;
             try {

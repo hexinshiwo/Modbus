@@ -7,6 +7,7 @@
     <string name="coil_up">线圈上升</string>
     <string name="cruise_control_close">定速巡航:关</string>
     <string name="cruise_control_open">定速巡航:开</string>
+    <string name="coil_stop">线圈停止</string>
     <string name="coil_down">线圈下降</string>
     <string name="km_h">km/h</string>
     <string name="car_speed">小车速度：</string>
@@ -23,8 +24,32 @@
     <string name="BUCK_elect">BUCK输出电流：</string>
     <string name="temp">线圈温度：</string>
     <string name="value">对应值</string>
-    <string name="save">保存并重启</string>
+    <string name="save">保存数据</string>
     <string name="confirm_speed">确认速度</string>
+    <string name="system_name">非接触式移动供电有轨电车系统监控平台</string>
+    <string name="max_speed">小车速度上限</string>
+    <string name="back_tomain">返回主页面</string>
+    <string name="mode_app">模式：APP</string>
+    <string name="mode_manual">模式：手动</string>
+    <string name="send_message">命令发送</string>
+    <string name="switch_show">切换设置页面</string>
+    <string name="ac_current_1">交流测1电流</string>
+    <string name="ac_current_2">交流测2电流</string>
+    <string name="dc_voltage_1">直流测1电压</string>
+    <string name="dc_voltage_2">直流测2电压</string>
+    <string name="BUCK_voltage_in">BUCK输入电压</string>
+    <string name="BUCK_voltage_out">BUCK输出电压</string>
+    <string name="BUCK_current_in">BUCK输入电流</string>
+    <string name="BUCK_current_out">BUCK输出电流</string>
+    <string name="BUCK_power_out">BUCK输出功率</string>
+    <string name="super_capacitance_voltage_1">超级电容1电压</string>
+    <string name="super_capacitance_voltage_2">超级电容2电压</string>
+    <string name="motor_current_in">电机输入电流</string>
+    <string name="dc_voltage_in">直流输入电压</string>
+    <string name="dc_current_in">直流输入电流</string>
+    <string name="power_input">输入功率</string>
+    <string name="ac_voltage">交流测电压</string>
+
 
     <string name="ip_address_1">原边IP地址1</string>
     <string name="ip_address_2">原边IP地址2</string>
@@ -49,4 +74,13 @@
     <string name="port_9">开放端口9</string>
     <string name="port_10">开放端口10</string>
     <string name="port_11">副边端口</string>
+
+    <string name="track_1">轨道1</string>
+    <string name="track_2">轨道2</string>
+    <string name="track_3">轨道3</string>
+    <string name="track_4">轨道4</string>
+    <string name="track_5">轨道5</string>
+    <string name="track_6">轨道6</string>
+    <string name="track_7">轨道7</string>
+    <string name="track_8">轨道8</string>
 </resources>

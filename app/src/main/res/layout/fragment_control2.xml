@@ -39,7 +39,7 @@
                     android:layout_margin="40dp"
                     android:layout_weight="1"
                     android:alpha="0.8"
-                    android:background="@drawable/stop_button"
+                    android:background="@drawable/rounded_rectangle_button"
                     android:gravity="center"
                     android:text="@string/stop"
                     android:textColor="@color/Red"
